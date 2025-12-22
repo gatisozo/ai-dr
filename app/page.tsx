@@ -1,165 +1,35 @@
 'use client';
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import {
-  ArrowRight,
-  Clock,
-  Zap,
-  Search,
-  CheckCircle2,
-  AlertCircle,
-  ChevronDown,
-} from 'lucide-react';
+import { ArrowRight, Zap, Search, CheckCircle2, AlertCircle, ChevronDown } from 'lucide-react';
 import AIVisibilityCards from './components/AIVisibilityCards';
 import AICostComparison from './components/AICostComparison';
 
 // ==========================================
-// INLINE DATA (specializācijas un queries)
+// FOKUSS: tikai fleboloģija (ārsti)
 // ==========================================
+const SPECIALTY_VALUE = 'fleboloģija';
+const SPECIALTY_LABEL = 'Fleboloģija';
 
-const specialties = [
-  { value: 'fleboloģija', label: 'Fleboloģija' },
-  { value: 'traumatoloģija', label: 'Traumatoloģija' },
-  { value: 'kardioloģija', label: 'Kardioloģija' },
-  { value: 'dermatoloģija', label: 'Dermatoloģija' },
-  { value: 'ginekoloģija', label: 'Ginekoloģija' },
-  { value: 'kosmētiskā_ķirurģija', label: 'Kosmētiskā ķirurģija' },
-  { value: 'weight_loss', label: 'Svara zudums / Bariatriskā ķirurģija' },
-  { value: 'zobārstniecība', label: 'Zobārstniecība' },
-  { value: 'fizioterapija', label: 'Fizioterapija' },
-  { value: 'ortopēdija', label: 'Ortopēdija' },
-  { value: 'oftalmoloģija', label: 'Oftalmoloģija' },
-  { value: 'diagnostika_usg', label: 'Diagnostika (USG)' },
-  { value: 'diagnostika_mr', label: 'Diagnostika (Magnētiskā rezonanse)' },
-  { value: 'psiholoģija', label: 'Psiholoģija' },
-  { value: 'psihoterapija', label: 'Psihoterapija' },
+const preGeneratedQueries: string[] = [
+  'Kur Rīgā pieņem augsti kvalificēts flebologs?',
+  'Kur ārstēt vēnu varikozi Latvijā?',
+  'Labākais flebologs Rīgā',
+  'Kur ārstēt kāju vēnas Rīgā?',
+  'Kādas ir vēnu operācijas cenas?',
 ];
 
-const preGeneratedQueries: Record<string, string[]> = {
-  fleboloģija: [
-    'Kur Rīgā pieņem augsti kvalificēts flebologs?',
-    'Kur ārstēt vēnu varikozi Latvijā?',
-    'Pie kura flebologa Rīgā vērsties ar vēnu problēmām?',
-    'Kur ārstēt kāju vēnas Rīgā?',
-    'Kādas ir vēnu operācijas cenas?',
-  ],
-  traumatoloģija: [
-    'Kurš ir ieteicams traumatologs pleca locītavas operācijai Rīgā?',
-    'Kur ārstēt sporta traumu Rīgā?',
-    'Kur ārstēt locītavu traumas Latvijā?',
-    'Rekomendējamā traumatoloģijas klīnika Rīgā',
-    'Kur operēt mugurkaulu Rīgā?',
-  ],
-  kardioloģija: [
-    'Kādu kardiologu Rīgā var rekomendēt?',
-    'Kur pārbaudīt sirdi Latvijā?',
-    'Kardioloģijas klīnika Rīgā, kuru var rekomendēt',
-    'Sirds diagnostika Rīgā — kur labāk?',
-    'Kurš labs kardiologs hipertensijas ārstēšanai?',
-  ],
-  dermatoloģija: [
-    'Zinošs dermatologs Rīgā',
-    'Kur ārstēt rozāciju Latvijā?',
-    'Dermatoloģijas klīnika Rīgā, kuru rekomendēsi',
-    'Dermatoloģijas lāzerprocedūru speciālisti Rīgā',
-    'Kurš labs dermatologs sejas ādas atjaunošanai?',
-  ],
-  ginekoloģija: [
-    'Saprotošs un kvalificēts ginekologs Rīgā',
-    'Kur apmeklēt ginekologu Latvijā?',
-    'Rekomendējama ginekoloģijas klīnika Rīgā',
-    'Ginekoloģijas lāzerprocedūru speciālisti Rīgā',
-    'Kur pārbaudīties pie ginekologa Rīgā?',
-  ],
-  kosmētiskā_ķirurģija: [
-    'Kuru klīniku var rekomendēt plastiskajai ķirurģijai Rīgā?',
-    'Kur palielināt krūtis Latvijā?',
-    'Sejas lifting Rīgā — kur labāk?',
-    'Kosmētiskā ķirurģija Rīgā',
-    'Zinošs plastiskais ķirurgs Latvijā',
-  ],
-  weight_loss: [
-    'Kur veikt bariatrisko operāciju Rīgā?',
-    'Svara zuduma programmas Latvijā',
-    'Kuņģa bypass operācija Rīgā',
-    'Labākā svara zuduma klīnika Latvijā',
-    'Kur ārstēt aptaukošanos Latvijā?',
-  ],
-  zobārstniecība: [
-    'Labākie zobārsti Rīgā',
-    'Labākie stomatologi Rīgā',
-    'Zobārstniecības klīnika Rīgā',
-    'Zobu implanti Rīgā — kur labāk?',
-    'Estētiskā zobārstniecība Rīgā',
-  ],
-  fizioterapija: [
-    'Labākais fizioterapeits Rīgā',
-    'Kur apmeklēt fizioterapiju Latvijā?',
-    'Fizioterapijas klīnika Rīgā',
-    'Muguras sāpju ārstēšana Rīgā',
-    'Rehabilitācijas centrs Rīgā',
-  ],
-  ortopēdija: [
-    'Labākais ortopēds Rīgā',
-    'Kur operēt locītavas Latvijā?',
-    'Ortopēdijas klīnika Rīgā',
-    'Ceļa locītavas maiņa Rīgā',
-    'Mugurkaula ķirurģija Rīgā',
-  ],
-  oftalmoloģija: [
-    'Labākais acu ārsts Rīgā',
-    'Kur operēt kataraktu Latvijā?',
-    'Oftalmoloģijas klīnika Rīgā',
-    'LASIK operācija Rīgā',
-    'Redzes korekcija Rīgā — kur labāk?',
-  ],
-  diagnostika_usg: [
-    'Kur veikt ultraskaņu Rīgā?',
-    'Labākā diagnostikas klīnika Rīgā',
-    'USG izmeklējumi Rīgā',
-    'Kur veikt vēdera dobuma ultraskaņu?',
-    '4D ultraskaņa grūtniecēm Rīgā',
-  ],
-  diagnostika_mr: [
-    'Kur veikt MR Rīgā?',
-    'Magnētiskā rezonanse Rīgā',
-    'MR izmeklējums Rīgā — kur labāk?',
-    'Galvas MR Rīgā',
-    'Labākā MR diagnostika Latvijā',
-  ],
-  psiholoģija: [
-    'Labākais psihologs Rīgā',
-    'Kur apmeklēt psihologu Latvijā?',
-    'Bērnu psihologs Rīgā',
-    'Ģimenes psihologs Rīgā',
-    'Online psihologs Latvijā',
-  ],
-  psihoterapija: [
-    'Labākais psihoterapeits Rīgā',
-    'Kur apmeklēt psihoterapiju Latvijā?',
-    'Kognitīvi uzvedības terapija Rīgā',
-    'Psihoterapija depresijai Rīgā',
-    'Traumas terapija Rīgā',
-  ],
-};
-
-function getRandomQuery(specialty: string): string {
-  const queries = preGeneratedQueries[specialty];
-  if (!queries || queries.length === 0) return `Kur Rīgā ir labs ${specialty} speciālists?`;
-  return queries[Math.floor(Math.random() * queries.length)];
+function getRandomQuery(): string {
+  return preGeneratedQueries[Math.floor(Math.random() * preGeneratedQueries.length)];
 }
 
 // ==========================================
 // Liquid-glass UI helpers
 // ==========================================
-
 function cx(...classes: Array<string | false | null | undefined>) {
   return classes.filter(Boolean).join(' ');
 }
 
-/**
- * FIX: ļaujam padot arī `id`, `data-*`, `onClick`, u.c. (HTMLAttributes)
- */
 function GlassCard({
   className,
   children,
@@ -220,30 +90,34 @@ function GlassButton({
   );
 }
 
-function normalizeDomain(input: string): string {
-  let v = input.trim().toLowerCase();
-  v = v.replace(/^https?:\/\//, '');
-  v = v.replace(/\/+$/, '');
-  v = v.replace(/^www\./, '');
-  if (!/^[a-z0-9.-]+\.[a-z]{2,}$/.test(v)) {
-    throw new Error('Ievadi korektu domēnu (piem. clinic.lv)');
-  }
-  return `https://${v}`;
+// ==========================================
+// URL helpers (profilu lapa, ne tikai domēns)
+// ==========================================
+function normalizeUrl(input: string): string {
+  let v = (input || '').trim();
+  if (!v) throw new Error('Ievadi profila lapas URL (piem. klinika.lv/arsti/janis-berzins)');
+
+  // pieļaujam bez https
+  if (!/^https?:\/\//i.test(v)) v = `https://${v}`;
+
+  const u = new URL(v);
+  // sakārtojam host (noņemam www)
+  u.hostname = u.hostname.replace(/^www\./i, '');
+  return u.toString();
 }
 
-function cleanDomainInput(raw: string): string {
-  let v = (raw || '').trim().toLowerCase();
-  v = v.replace(/^https?:\/\//, '');
-  v = v.replace(/^www\./, '');
-  v = v.split('/')[0].split('?')[0].split('#')[0];
-  v = v.replace(/^\.+|\.+$/g, '');
+function cleanUrlInput(raw: string): string {
+  let v = (raw || '').trim();
+  v = v.replace(/^\s+|\s+$/g, '');
+  v = v.replace(/^https?:\/\//i, '');
+  v = v.replace(/^www\./i, '');
+  v = v.replace(/\s/g, '');
   return v;
 }
 
 // ==========================================
-// MAIN COMPONENT
+// LocalStorage hook
 // ==========================================
-
 function useLocalStorageState<T>(key: string, initial: T) {
   const [value, setValue] = React.useState<T>(initial);
 
@@ -268,6 +142,9 @@ function useLocalStorageState<T>(key: string, initial: T) {
   return [value, setValue] as const;
 }
 
+// ==========================================
+// Types
+// ==========================================
 type MiniResult = {
   score: number;
   scores?: {
@@ -294,42 +171,49 @@ type MiniResult = {
 };
 
 export default function Home() {
+  // ==========================================
   // State
+  // ==========================================
   const [budget, setBudget] = useState(1500);
+
+  // Fleboloģija – fiksēts
+  const specialty = SPECIALTY_VALUE;
+
+  // AI tests
   const [queryInput, setQueryInput] = useState('');
-  const [specialty, setSpecialty] = useLocalStorageState<string>('lucera_specialty', 'fleboloģija');
-
-  /**
-   * NB: mainīgā nosaukumu atstājam kā `clinicName` (lai nekas nesalūzt ar API),
-   * bet UI šo rāda kā “Ārsta vārds, uzvārds”.
-   */
-  const [clinicName, setClinicName] = useLocalStorageState<string>('lucera_clinicName', '');
-
+  const [doctorName, setDoctorName] = useLocalStorageState<string>('lucera_doctorName', '');
   const [showResults, setShowResults] = useState(false);
-  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [aiResults, setAiResults] = useState<any>(null);
   const [apiError, setApiError] = useState('');
-
-  // DEMO modal
-  const [demoOpen, setDemoOpen] = useState(false);
-  const [demoStep, setDemoStep] = useState(0);
 
   // “Kāpēc rezultāti var atšķirties…”
   const [showWhyDifferent, setShowWhyDifferent] = useState(false);
   const [showGptFull, setShowGptFull] = useState(false);
   const [showClaudeFull, setShowClaudeFull] = useState(false);
 
-  // Early Audit form (lead magnet)
-  const [leadClinic, setLeadClinic] = useLocalStorageState<string>('lucera_leadClinic', '');
-  const [leadWebsite, setLeadWebsite] = useLocalStorageState<string>('lucera_leadWebsite', '');
-  const [leadEmail, setLeadEmail] = useLocalStorageState<string>('lucera_leadEmail', '');
-  const [leadSpecialty, setLeadSpecialty] = useLocalStorageState<string>('lucera_leadSpecialty', '');
-  const [leadSubmitting, setLeadSubmitting] = useState(false);
-  const [leadSuccess, setLeadSuccess] = useState(false);
+  // Demo modal
+  const [demoOpen, setDemoOpen] = useState(false);
+  const [demoStep, setDemoStep] = useState(0);
+
+  // FAQ
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
 
   // Sticky WhatsApp
   const [showWhatsApp, setShowWhatsApp] = useState(false);
+
+  // Lead magnet (Personal AI Trust Check ārstam)
+  const [leadProfileUrl, setLeadProfileUrl] = useLocalStorageState<string>('lucera_leadProfileUrl', '');
+  const [leadDoctor, setLeadDoctor] = useLocalStorageState<string>('lucera_leadDoctor', '');
+  const [leadEmail, setLeadEmail] = useLocalStorageState<string>('lucera_leadEmail', '');
+  const [leadSubmitting, setLeadSubmitting] = useState(false);
+  const [leadSuccess, setLeadSuccess] = useState(false);
+
+  // Mini-check
+  const [miniUrl, setMiniUrl] = useState('');
+  const [miniLoading, setMiniLoading] = useState(false);
+  const [miniError, setMiniError] = useState('');
+  const [miniResult, setMiniResult] = useState<MiniResult | null>(null);
 
   // ==========================================
   // SESSION TRACKING
@@ -340,7 +224,7 @@ export default function Home() {
     path: string;
     ref: string;
     consent: { analytics: boolean; cookies: boolean };
-    identity: { email?: string; clinic?: string; website?: string; specialty?: string };
+    identity: { email?: string; doctor?: string; profileUrl?: string; specialty?: string };
     events: Array<Record<string, any>>;
     sent: boolean;
   } | null>(null);
@@ -356,7 +240,7 @@ export default function Home() {
       path: window.location.pathname,
       ref: document.referrer || '',
       consent: { analytics: true, cookies: true },
-      identity: {},
+      identity: { specialty: SPECIALTY_LABEL },
       events: [],
       sent: false,
     };
@@ -368,7 +252,7 @@ export default function Home() {
     s.events.push({ ts: Date.now(), type, ...data });
   };
 
-  const updateIdentity = (data: Partial<{ email: string; clinic: string; website: string; specialty: string }>) => {
+  const updateIdentity = (data: Partial<{ email: string; doctor: string; profileUrl: string; specialty: string }>) => {
     const s = sessionRef.current;
     if (!s) return;
     s.identity = { ...s.identity, ...data };
@@ -380,11 +264,11 @@ export default function Home() {
     s.sent = true;
 
     const humanSummary =
-      `Klients pieprasīja bezmaksas Personal AI Trust Check.\n` +
-      `Profila lapa: ${s.identity.website ?? '—'}\n` +
+      `Klients pieprasīja Personal AI Trust Check (ārstam).\n` +
+      `Specialitāte: ${s.identity.specialty ?? SPECIALTY_LABEL}\n` +
+      `Profila lapa: ${s.identity.profileUrl ?? '—'}\n` +
+      `Ārsts: ${s.identity.doctor ?? '—'}\n` +
       `E-pasts: ${s.identity.email ?? '—'}\n` +
-      `Specialitāte: ${s.identity.specialty ?? '—'}\n` +
-      (s.identity.clinic ? `Ārsts (ievade): ${s.identity.clinic}\n` : '') +
       `\nKo klients izdarīja lapā:\n` +
       s.events
         .filter((e) => ['mini_check_submit', 'ai_check_submit', 'ai_check_result', 'lead_submit'].includes(e.type))
@@ -396,7 +280,7 @@ export default function Home() {
             const c2 = (e.claude_clinics || []).slice(0, 3).join(', ');
             return `• AI tests pabeigts. ChatGPT minēja: ${c1 || '—'}. Claude minēja: ${c2 || '—'}.`;
           }
-          if (e.type === 'lead_submit') return `• Pieprasīja pārbaudi (aizpildīja formu)`;
+          if (e.type === 'lead_submit') return `• Pieprasīja Trust Check (aizpildīja formu)`;
           return `• ${e.type}`;
         })
         .join('\n');
@@ -462,19 +346,14 @@ export default function Home() {
   }, []);
 
   // ==========================================
-  // Mini-check
+  // Mini-check handlers
   // ==========================================
-  const [miniUrl, setMiniUrl] = useState('');
-  const [miniLoading, setMiniLoading] = useState(false);
-  const [miniError, setMiniError] = useState('');
-  const [miniResult, setMiniResult] = useState<MiniResult | null>(null);
-
   const aiScore = miniResult?.scores?.aiRecommendability ?? null;
   const seoScore = miniResult?.scores?.seoHygiene ?? miniResult?.score ?? null;
   const pillars = miniResult?.scores?.pillars ?? null;
   const capReasons = miniResult?.scores?.capReasons ?? [];
 
-  const normalizeUrl = (raw: string) => {
+  const normalizeUrlLoosely = (raw: string) => {
     let u = (raw || '').trim();
     if (!/^https?:\/\//i.test(u)) u = `https://${u}`;
 
@@ -488,10 +367,10 @@ export default function Home() {
   };
 
   const handleMiniCheck = async () => {
-    track('mini_check_submit', { url: normalizeUrl(miniUrl) });
+    track('mini_check_submit', { url: normalizeUrlLoosely(miniUrl) });
 
     if (!miniUrl.trim()) {
-      setMiniError('Lūdzu ievadiet profila lapas adresi');
+      setMiniError('Lūdzu ievadiet mājaslapas adresi');
       return;
     }
 
@@ -503,7 +382,7 @@ export default function Home() {
       const res = await fetch('/api/mini-check', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: normalizeUrl(miniUrl) }),
+        body: JSON.stringify({ url: normalizeUrlLoosely(miniUrl) }),
       });
 
       const data = await res.json();
@@ -529,12 +408,6 @@ export default function Home() {
         finalUrl: data.finalUrl,
         clinicName: data.clinicName,
       });
-
-      // prefill: ja crawler atrod nosaukumu, ieliekam laukā (UI to rāda kā ārsta vārdu)
-      if (!clinicName.trim() && typeof data.clinicName === 'string' && data.clinicName.trim()) {
-        setClinicName(data.clinicName.trim());
-        setLeadClinic((prev) => (prev.trim() ? prev : data.clinicName.trim()));
-      }
     } catch (e) {
       track('mini_check_error', { message: e instanceof Error ? e.message : String(e) });
       setMiniError(e instanceof Error ? e.message : 'Neizdevās veikt mini-check');
@@ -567,7 +440,7 @@ export default function Home() {
   // Handlers
   // ==========================================
   const handleRandomQuery = () => {
-    const randomQuery = getRandomQuery(specialty);
+    const randomQuery = getRandomQuery();
     setQueryInput(randomQuery);
     requestAnimationFrame(() => {
       document.getElementById('ai-question')?.focus();
@@ -580,8 +453,7 @@ export default function Home() {
       return;
     }
 
-    // NB: uz API sūtām esošo key `clinicName` (lai nekas nesalūzt)
-    track('ai_check_submit', { query: queryInput.trim(), clinicName: clinicName || null });
+    track('ai_check_submit', { query: queryInput.trim(), doctorName: doctorName || null, specialty });
 
     setIsLoading(true);
     setShowResults(false);
@@ -591,12 +463,13 @@ export default function Home() {
     setShowClaudeFull(false);
 
     try {
+      // API kontrakts paliek tas pats: clinicName izmantojam kā "ārsta vārds"
       const response = await fetch('/api/ai-check', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           query: queryInput,
-          clinicName: clinicName || undefined,
+          clinicName: doctorName || undefined,
         }),
       });
 
@@ -609,7 +482,7 @@ export default function Home() {
         setShowResults(true);
 
         track('ai_check_result', {
-          clinicName: clinicName || null,
+          doctorName: doctorName || null,
           userClinicFound: data?.results?.userClinicFound ?? null,
           chatgpt_ok: Boolean(data?.results?.chatgpt?.success),
           claude_ok: Boolean(data?.results?.claude?.success),
@@ -631,44 +504,45 @@ export default function Home() {
   const handleLeadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    updateIdentity({
-      email: leadEmail.trim() || undefined,
-      clinic: leadClinic.trim() || undefined,
-      website: leadWebsite.trim() || undefined,
-      specialty: leadSpecialty || undefined,
-    });
-
-    track('lead_submit', {
-      email: leadEmail.trim() || null,
-      clinic: leadClinic.trim() || null,
-      website: leadWebsite.trim() || null,
-      specialty: leadSpecialty || null,
-    });
-
     setLeadSuccess(false);
 
-    let website: string;
+    let profileUrl: string;
     try {
-      website = normalizeDomain(leadWebsite);
+      profileUrl = normalizeUrl(leadProfileUrl);
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Nederīgs domēns');
+      alert(err instanceof Error ? err.message : 'Nederīgs URL');
       return;
     }
 
     if (!leadEmail.trim()) return;
 
+    updateIdentity({
+      email: leadEmail.trim() || undefined,
+      doctor: leadDoctor.trim() || undefined,
+      profileUrl: profileUrl || undefined,
+      specialty: SPECIALTY_LABEL,
+    });
+
+    track('lead_submit', {
+      email: leadEmail.trim() || null,
+      doctor: leadDoctor.trim() || null,
+      profileUrl,
+      specialty,
+    });
+
     setLeadSubmitting(true);
 
     try {
+      // backendam nemainām kontraktu: clinic = ārsts, website = profila URL
       const res = await fetch('/api/lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          clinic: leadClinic.trim() || undefined,
-          website,
+          clinic: leadDoctor.trim() || undefined,
+          website: profileUrl,
           email: leadEmail.trim(),
-          specialty: leadSpecialty || undefined,
-          source: 'free-audit-form',
+          specialty: SPECIALTY_VALUE,
+          source: 'doctor-trust-check',
         }),
       });
 
@@ -682,144 +556,14 @@ export default function Home() {
       setLeadSuccess(true);
       sendSummaryOnce('lead_success');
 
-      // Prefill uz AI testa lauku (ja tukšs)
-      if (!clinicName.trim() && leadClinic.trim()) setClinicName(leadClinic.trim());
-      if (!leadSpecialty && specialty) setLeadSpecialty(specialty);
+      // Prefill uz AI testu
+      if (!doctorName.trim() && leadDoctor.trim()) setDoctorName(leadDoctor.trim());
     } catch (err) {
       alert(err instanceof Error ? err.message : 'Neizdevās nosūtīt. Pamēģini vēlreiz.');
     } finally {
       setLeadSubmitting(false);
     }
   };
-
-  // ==========================================
-  // FAQ data
-  // ==========================================
-  const faqs: Array<{ q: string; a: React.ReactNode }> = [
-    {
-      q: 'Vai Personal AI Trust Check ir “mārketings”?',
-      a: (
-        <div className="space-y-3 text-slate-800 leading-relaxed">
-          <p>
-            <strong>Nē.</strong> Tas ir <span className="font-semibold">uzticības un reputācijas</span> jautājums.
-          </p>
-          <div className="rounded-2xl border border-blue-200/60 bg-blue-50/40 p-4">
-            <p className="font-semibold text-slate-900">Vienā teikumā:</p>
-            <p className="mt-1">
-              AI ieteikumi balstās uz to, vai par Jūsu praksi ir <span className="font-semibold">saprotami</span>,{' '}
-              <span className="font-semibold">pārbaudāmi</span> un{' '}
-              <span className="font-semibold">droši citējami signāli</span> pacienta jautājumā.
-            </p>
-          </div>
-          <p className="text-sm text-slate-700">
-            Reklāma var palielināt klikšķus, bet tā neizveido skaidru identitāti un pierādāmu kompetenci — AI skatās tieši uz to.
-          </p>
-        </div>
-      ),
-    },
-    {
-      q: 'Kāpēc AI “neuzticas” un dažreiz ieslēdzas fallback mode?',
-      a: (
-        <div className="space-y-4 text-slate-800 leading-relaxed">
-          <div className="rounded-2xl border border-slate-200/60 bg-white/30 p-4">
-            <p>
-              AI <strong>neizdomā uzticību</strong>. Tas tikai <strong>atpazīst uzticību</strong>, ja tā jau ir publiski pierādāma un
-              saskaņota starp avotiem.
-            </p>
-          </div>
-
-          <div>
-            <p className="font-semibold text-slate-900 mb-2">“Fallback mode” parasti ieslēdzas, ja:</p>
-            <ul className="list-disc pl-5 space-y-1">
-              <li>
-                trūkst <span className="font-semibold">verificējamu signālu</span> (pieredze, sertifikāti, darbības jomas),
-              </li>
-              <li>informācija ir sadrumstalota vai pretrunīga,</li>
-              <li>
-                saturs izklausās pēc <span className="font-semibold">mārketinga</span>, bet bez konkrētiem pierādījumiem,
-              </li>
-              <li>nav skaidras ārsta ↔ pakalpojumu sasaistes,</li>
-              <li>nav citējamu / neatkarīgu profilu.</li>
-            </ul>
-          </div>
-
-          <div className="rounded-2xl border border-amber-200/60 bg-amber-50/40 p-4">
-            <p className="font-semibold text-amber-900">Ko tas nozīmē praksē?</p>
-            <p className="mt-1 text-amber-900/90">
-              Šādā situācijā AI izvēlas drošāku ceļu — <strong>ieteikt citus</strong> vai dot vispārīgu atbildi bez konkrēta vārda.
-            </p>
-          </div>
-
-          <div className="rounded-2xl border border-emerald-200/60 bg-emerald-50/40 p-4">
-            <p className="font-semibold text-emerald-900">Mērķis nav “AI optimizācija”.</p>
-            <p className="mt-1 text-emerald-900/90">
-              Mērķis ir <strong>sakārtota, pierādāma realitāte</strong>, ko AI var droši pateikt pacientam.
-            </p>
-          </div>
-        </div>
-      ),
-    },
-    {
-      q: 'Cik ilgi aizņem process, lai uzlabotu pieminēšanu AI?',
-      a: (
-        <div className="space-y-3 text-slate-800 leading-relaxed">
-          <p>
-            Pirmos uzlabojumus parasti var redzēt <strong>2–4 nedēļu laikā</strong>.
-          </p>
-          <p>
-            Stabilāka ietekme veidojas <strong>2–3 mēnešu laikā</strong>, atkarībā no konkurences un sākotnējās publiskās informācijas kvalitātes.
-          </p>
-        </div>
-      ),
-    },
-    {
-      q: 'Vai tas strādā visām medicīnas nozarēm?',
-      a: (
-        <div className="space-y-3 text-slate-800 leading-relaxed">
-          <p>
-            <strong>Jā</strong> — īpaši nozarēs ar augstu konkurenci un dārgām reklāmām (fleboloģija, dermatoloģija, ginekoloģija, kardioloģija,
-            traumatoloģija u.c.).
-          </p>
-          <p className="text-sm text-slate-700">
-            Darbs būtībā sakārto to, kā Jūs kā ārsts (un Jūsu prakse) ir saprotami digitālajā vidē.
-          </p>
-        </div>
-      ),
-    },
-    {
-      q: 'Kāda ir “garantija”?',
-      a: (
-        <div className="space-y-3 text-slate-800 leading-relaxed">
-          <p>
-            Mēs negarantējam konkrētu vietu vai <strong>“TOP-3”</strong>, jo AI atbildes var mainīties atkarībā no jautājuma, modeļa un publiski
-            pieejamiem datiem.
-          </p>
-          <div className="rounded-2xl border border-slate-200/60 bg-white/30 p-4">
-            <p className="font-semibold text-slate-900">Ko mēs garantējam:</p>
-            <ul className="mt-2 list-disc pl-5 space-y-1">
-              <li>pārbaudi un auditu,</li>
-              <li>rīcības plānu (ko publicēt un kur),</li>
-              <li>ieviešanas ieteikumus,</li>
-              <li>mērījumus pēc vienotas metodikas.</li>
-            </ul>
-          </div>
-        </div>
-      ),
-    },
-    {
-      q: 'Vai man vajag reklāmas, ja es uzlaboju AI uztveramību?',
-      a: (
-        <div className="space-y-3 text-slate-800 leading-relaxed">
-          <p>
-            <strong>Ne vienmēr.</strong> Daudziem ārstiem reklāmas vispār nav primārais kanāls.
-          </p>
-          <p>
-            Mērķis ir panākt, lai pacients biežāk nonāk pie Jums no <span className="font-semibold">ieteikumiem</span>, nevis tikai no klikšķiem.
-          </p>
-        </div>
-      ),
-    },
-  ];
 
   // ==========================================
   // Styles + pillar helpers
@@ -829,8 +573,6 @@ export default function Home() {
     'border border-slate-300/70 ring-1 ring-white/10 ' +
     'text-slate-900 placeholder:text-slate-500 ' +
     'focus:outline-none focus:ring-2 focus:ring-blue-400/60 focus:border-blue-400/70';
-
-  const selectBase = inputBase;
 
   const pillarTone = (v: number) => (v >= 80 ? 'good' : v >= 50 ? 'warn' : 'bad');
 
@@ -869,10 +611,10 @@ export default function Home() {
     if (!p) return null;
 
     const items = [
-      { k: 'trustSignals', label: 'Uzticamības signāli', msg: 'AI nevar droši identificēt Jūs kā speciālistu → biežāk nemin vai iesaka citus.' },
-      { k: 'entitySchema', label: 'Identitātes struktūra', msg: 'AI nesaprot, ko tieši Jūs darāt → sajauc specializācijas vai atbild vispārīgi.' },
-      { k: 'answerability', label: 'Atbildamība', msg: 'AI nespēj pamatot izvēli par Jums → drošāk izvēlas citus ar skaidrāku info.' },
-      { k: 'access', label: 'Pieejamība', msg: 'AI nevar pilnvērtīgi nolasīt profilu → Jūs pazūdat ieteikumu kandidātos.' },
+      { k: 'trustSignals', label: 'Uzticamības signāli', msg: 'AI nevar droši identificēt ārstu → biežāk nemin.' },
+      { k: 'entitySchema', label: 'Identitātes struktūra', msg: 'AI nesaprot, ko tieši darāt → sajauc ar citiem.' },
+      { k: 'answerability', label: 'Atbildamība', msg: 'AI nespēj atbildēt ar jums → ieliek citus, kas skaidro labāk.' },
+      { k: 'access', label: 'Pieejamība', msg: 'AI nevar pilnvērtīgi nolasīt profilu → jūs pazūdat kandidātos.' },
     ];
 
     const sorted = items
@@ -883,53 +625,55 @@ export default function Home() {
     return { worstLabel: worst.label, worstValue: worst.v, message: worst.msg };
   };
 
-  // DEMO screens
+  // ==========================================
+  // DEMO screens (ārsts)
+  // ==========================================
   const demoScreens = [
     {
-      title: '1/3 — Ko pacients jautā AI',
+      title: '1/3 — Ko pacients jautā AI (fleboloģija)',
       body: (
         <div className="space-y-3">
           <div className="text-sm text-slate-700">Pacients:</div>
           <div className="rounded-2xl border border-white/20 bg-white/14 p-4 text-slate-900">
-            “Kur Rīgā ir labs flebologs vēnu varikozes ārstēšanai?”
+            “Kur Rīgā pieņem augsti kvalificēts flebologs?”
           </div>
           <div className="text-sm text-slate-700 mt-3">AI atbilde (piemērs):</div>
           <div className="rounded-2xl border border-white/20 bg-white/14 p-4 text-sm text-slate-900">
-            Ieteiktu apsvērt A klīniku (specializējas vēnu ārstēšanā), B centru (plaša diagnostika), C speciālistu…
+            Varat apsvērt A klīniku/ārstu (pieredze + skaidri profili), B centru (diagnostika + operācijas), C…
           </div>
           <div className="text-xs text-slate-600">*Demo piemērs, lai parādītu mehānismu.</div>
         </div>
       ),
     },
     {
-      title: '2/3 — Kur rodas risks (fallback)',
+      title: '2/3 — Kur rodas risks ārstam',
       body: (
         <div className="space-y-3">
           <div className="rounded-2xl border border-red-200/60 bg-red-50/40 p-4">
-            <div className="font-semibold text-red-900">AI nepasaka Jūsu vārdu vai izvēlas citus.</div>
+            <div className="font-semibold text-red-900">Jūsu vārds nav minēts.</div>
             <div className="text-sm text-red-900/90 mt-1">
-              Tas bieži nav par kvalitāti — AI vienkārši neredz pietiekami skaidrus, citējamus publiskos signālus.
+              Tas bieži nav par kvalitāti — AI vienkārši neredz pietiekami citējamus publiskus signālus par praksi.
             </div>
           </div>
           <div className="text-sm text-slate-700">Kas notiek pacienta galvā:</div>
           <ul className="text-sm text-slate-900 space-y-2 list-disc pl-5">
             <li>“AI ieteica citus — tātad tie ir drošāki.”</li>
-            <li>“Man nav jāsalīdzina 10 profili.”</li>
-            <li>“Es zvanu tiem, ko ieteica.”</li>
+            <li>“Man nav laika salīdzināt 10 profilus.”</li>
+            <li>“Es pierakstos pie tiem, ko ieteica.”</li>
           </ul>
         </div>
       ),
     },
     {
-      title: '3/3 — Ko mēs sakārtojam (4 pīlāri)',
+      title: '3/3 — Ko mēs sakārtojam (4 pīlāri ārstam)',
       body: (
         <div className="space-y-3">
           <div className="grid grid-cols-2 gap-3">
             {[
-              { label: 'Pieejamība', v: 45, hint: 'indeksācija / render / satura minimums' },
-              { label: 'Identitāte', v: 35, hint: 'ārsts / pakalpojumi / pieredze' },
-              { label: 'Uzticamība', v: 55, hint: 'pierādāmi fakti, kontakti, profili' },
-              { label: 'Atbildamība', v: 40, hint: 'FAQ, skaidrs saturs pacientam' },
+              { label: 'Pieejamība', v: 45, hint: 'profils nolasāms / indeksējams' },
+              { label: 'Identitāte', v: 35, hint: 'ārsts ↔ pakalpojumi ↔ metodes' },
+              { label: 'Uzticamība', v: 55, hint: 'pieredze, sertifikāti, avoti' },
+              { label: 'Atbildamība', v: 40, hint: 'FAQ, skaidri “kam palīdz / kā”' },
             ].map((p, idx) => {
               const tone = pillarTone(p.v);
               const s = toneStyles(tone);
@@ -954,10 +698,10 @@ export default function Home() {
           <div className="rounded-2xl border border-blue-200/60 bg-blue-50/40 p-4">
             <div className="text-sm font-semibold text-slate-900">Ko tas nozīmē praksē:</div>
             <div className="text-sm text-slate-800 mt-1">
-              AI nevar droši sasaistīt Jūs ar konkrētu problēmas risinājumu → biežāk iesaka citus ar skaidrāku publisko struktūru.
+              Ja AI nevar droši sasaistīt jūsu vārdu ar vēnu ārstēšanu un metodēm, tas izvēlas drošāku variantu — ieteikt citus.
             </div>
             <div className="text-sm font-semibold text-slate-900 mt-3">Nākamais solis:</div>
-            <div className="text-sm text-slate-800">Personal AI Trust Check (profilu/avotu audits + plāns) — 24h.</div>
+            <div className="text-sm text-slate-800">Personal AI Trust Check (5 jautājumi + “fallback mode” iemesli) – 1 darba dienā.</div>
           </div>
         </div>
       ),
@@ -971,6 +715,89 @@ export default function Home() {
     setDemoStep(0);
   };
 
+  // ==========================================
+  // FAQ data (ārsts)
+  // ==========================================
+  const faqs: Array<{ q: string; a: React.ReactNode }> = [
+    {
+      q: 'Vai šis ir mārketinga jautājums?',
+      a: (
+        <div className="space-y-3 text-slate-800 leading-relaxed">
+          <p>
+            <strong>Nē.</strong> Tas ir <span className="font-semibold">uzticības un profesionālās reputācijas</span> jautājums.
+          </p>
+          <div className="rounded-2xl border border-blue-200/60 bg-blue-50/40 p-4">
+            <p className="font-semibold text-slate-900">Vienā teikumā:</p>
+            <p className="mt-1">
+              AI min ārstu tikai tad, ja publiski ir <span className="font-semibold">skaidri, citējami un saskaņoti signāli</span>, ka tieši jūs
+              šo problēmu risināt.
+            </p>
+          </div>
+        </div>
+      ),
+    },
+    {
+      q: 'Kāpēc AI dažreiz “neuzticas” un ieslēdzas fallback mode?',
+      a: (
+        <div className="space-y-4 text-slate-800 leading-relaxed">
+          <div className="rounded-2xl border border-slate-200/60 bg-white/30 p-4">
+            <p>
+              AI <strong>neizdomā uzticību</strong>. Tas tikai <strong>atpazīst uzticību</strong>, ja tā jau ir publiski pierādāma un konsekventa.
+            </p>
+          </div>
+          <div>
+            <p className="font-semibold text-slate-900 mb-2">Fallback mode parasti ieslēdzas, ja:</p>
+            <ul className="list-disc pl-5 space-y-1">
+              <li>profilā nav skaidri aprakstīts “ko tieši daru” (metodes, indikācijas),</li>
+              <li>nav citējamu pierādījumu (sertifikāti, pieredze, publikācijas/konferences),</li>
+              <li>ārsts nav konsekventi sasaistīts ar fleboloģiju dažādos avotos,</li>
+              <li>lapa ir grūti nolasāma (JS-only, noindex, nav satura).</li>
+            </ul>
+          </div>
+          <div className="rounded-2xl border border-amber-200/60 bg-amber-50/40 p-4">
+            <p className="font-semibold text-amber-900">Ko tas nozīmē?</p>
+            <p className="mt-1 text-amber-900/90">AI izvēlas drošāku ceļu — ieteikt citus, par kuriem ir vairāk skaidru signālu.</p>
+          </div>
+        </div>
+      ),
+    },
+    {
+      q: 'Vai varat garantēt, ka AI mani minēs?',
+      a: (
+        <div className="space-y-3 text-slate-800 leading-relaxed">
+          <p>
+            Konkrētu vietu vai “TOP-3” <strong>neviens godīgi negarantē</strong>, jo atbilde mainās pēc jautājuma un modeļa.
+          </p>
+          <div className="rounded-2xl border border-slate-200/60 bg-white/30 p-4">
+            <p className="font-semibold text-slate-900">Ko mēs garantējam:</p>
+            <ul className="mt-2 list-disc pl-5 space-y-1">
+              <li>pārbaudi 5 tipiskos pacientu jautājumos,</li>
+              <li>skaidrus iemeslus, kāpēc jūs nemin,</li>
+              <li>rīcības plānu (ko publicēt un kur),</li>
+              <li>pārtestu pēc izmaiņām.</li>
+            </ul>
+          </div>
+        </div>
+      ),
+    },
+    {
+      q: 'Cik ātri var redzēt uzlabojumu efektu?',
+      a: (
+        <div className="space-y-3 text-slate-800 leading-relaxed">
+          <p>
+            Pirmos uzlabojumus parasti var redzēt <strong>2–4 nedēļu laikā</strong>.
+          </p>
+          <p>
+            Stabilāka ietekme veidojas <strong>2–3 mēnešu laikā</strong>, atkarībā no konkurences un publiskās informācijas kvalitātes.
+          </p>
+        </div>
+      ),
+    },
+  ];
+
+  // ==========================================
+  // UI
+  // ==========================================
   return (
     <main id="top" className="min-h-screen text-slate-900">
       {/* Liquid background */}
@@ -1014,7 +841,7 @@ export default function Home() {
             className="pointer-events-auto flex items-center gap-2 rounded-2xl px-2 py-1 transition hover:bg-white/30"
             aria-label="Sākums"
           >
-            <img src="/brand/lucera.png" alt="Lucera" className="h-9 w-auto sm:h-10" />
+            <img src="/brand/lucera.png" alt="Lucera" className="h-10 w-auto sm:h-11" />
           </a>
 
           <div className="hidden h-6 w-px bg-slate-200/70 sm:block" />
@@ -1023,10 +850,10 @@ export default function Home() {
 
           <div className="pointer-events-auto flex min-w-0 flex-1 items-center gap-2 overflow-x-auto whitespace-nowrap [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {[
+              { href: '#trust-check', label: 'Personal Trust Check' },
               { href: '#mini-check', label: 'Mini-check' },
-              { href: '#cost', label: 'Kāpēc tas svarīgi' },
-              { href: '#audit', label: 'Personal check' },
               { href: '#ai-checker', label: 'AI tests' },
+              { href: '#cost', label: 'Izmaksas' },
               { href: '#faq', label: 'FAQ' },
             ].map((it) => (
               <a
@@ -1045,7 +872,7 @@ export default function Home() {
 
           <button
             type="button"
-            onClick={() => document.getElementById('audit')?.scrollIntoView({ behavior: 'smooth' })}
+            onClick={() => document.getElementById('trust-check')?.scrollIntoView({ behavior: 'smooth' })}
             className={cx(
               'pointer-events-auto hidden sm:inline-flex shrink-0 items-center rounded-2xl px-4 py-2',
               'text-xs font-bold text-white',
@@ -1053,7 +880,7 @@ export default function Home() {
               'ring-1 ring-white/10 shadow-sm'
             )}
           >
-            Personal check →
+            Saņemt pārbaudi →
           </button>
         </nav>
       </div>
@@ -1061,45 +888,48 @@ export default function Home() {
       {/* HERO */}
       <section className="relative py-20 px-4">
         <div className="max-w-5xl mx-auto text-center">
-          <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight tracking-tight">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/25 px-4 py-2 text-sm font-semibold text-slate-900 ring-1 ring-white/10">
+            Fokusā: <span className="font-extrabold">{SPECIALTY_LABEL}</span> (ārsti)
+          </div>
+
+          <h1 className="mt-6 text-5xl md:text-7xl font-bold mb-8 leading-tight tracking-tight">
             Pacienti arvien biežāk
             <br />
-            sāk ar jautājumu AI.
+            nevis meklē — bet
             <br />
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600">
-              Vai AI spēj korekti nosaukt
-              <br />
-              Jūs kā ārstu?
+              prasa AI, pie kura flebologa pierakstīties.
             </span>
           </h1>
 
           <p className="text-xl md:text-2xl text-slate-700 mb-8 max-w-4xl mx-auto leading-relaxed">
-            Ja publiskie signāli par Jūsu praksi nav skaidri, AI izvēlas drošāko atbildi — min citus vai ieslēdz
-            “konsultējieties ar ārstu” režīmu.
+            Un AI bieži min tos ārstus, par kuriem ir skaidrāki publiskie pierādījumi (profils, metodes, pieredze, citējami avoti).
           </p>
 
           <GlassCard className="p-6 mb-6 max-w-2xl mx-auto">
             <div className="rounded-2xl border border-white/25 bg-white/25 backdrop-blur-xl px-6 py-5">
-              <p className="text-2xl font-medium text-slate-900 italic">"Kur Rīgā ir labs flebologs vēnu varikozes ārstēšanai?"</p>
+              <p className="text-2xl font-medium text-slate-900 italic">"Kur Rīgā pieņem augsti kvalificēts flebologs?"</p>
             </div>
           </GlassCard>
 
           <GlassCard className="p-6 mb-10 max-w-2xl mx-auto border-red-200/50">
             <div className="rounded-2xl border border-red-200/50 bg-red-50/40 backdrop-blur-xl px-6 py-5">
-              <p className="text-xl md:text-2xl font-bold text-red-800">
-                Un AI var nosaukt citus speciālistus — pat ja Jūs objektīvi esat labā izvēle.
-              </p>
+              <p className="text-xl md:text-2xl font-bold text-red-800">Ja AI jūs nemin — pacients aiziet pie citiem.</p>
             </div>
           </GlassCard>
 
           <GlassCard className="p-8 mb-4 max-w-3xl mx-auto">
-            <h2 className="text-2xl font-bold mb-6">Pārbaudiet, kā AI šobrīd “redz” Jūs</h2>
+            <h2 className="text-2xl font-bold mb-2">Bezmaksas Personal AI Trust Check 1 darba dienas laikā</h2>
+            <p className="text-slate-700 mb-6">
+              Pārbaudām: vai AI spēj droši nosaukt jūs pacienta jautājumos (un kas traucē, ja nespēj).
+            </p>
 
             <div className="space-y-3 mb-8 text-left max-w-xl mx-auto">
               {[
-                'Bezmaksas “Personal AI Trust Check”',
-                'Parāda: kur AI kļūst izvairīgs un ko tas nespēj pateikt par Jums',
-                'Rezultāti pēc 10–15 sekundēm',
+                'Jūsu pieminēšana 5 tipiskos pacientu jautājumos',
+                'Kādus citus flebologus AI min jūsu vietā (un kāpēc)',
+                'Top-5 trūkstošie signāli, kas izraisa “fallback mode”',
+                'Rīcības plāns: ko publicēt un kur (1 mēnesim uz priekšu)',
               ].map((t, i) => (
                 <div key={i} className="flex items-center gap-3">
                   <CheckCircle2 className="w-6 h-6 text-emerald-600 flex-shrink-0" />
@@ -1110,10 +940,10 @@ export default function Home() {
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <GlassButton
-                onClick={() => document.getElementById('audit')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => document.getElementById('trust-check')?.scrollIntoView({ behavior: 'smooth' })}
                 className="w-full sm:w-auto px-8 py-5 text-xl font-bold"
               >
-                Pārbaudīt, ko AI saka par mani
+                Saņemt Personal AI Trust Check
                 <ArrowRight className="group-hover:translate-x-1 transition-transform" />
               </GlassButton>
 
@@ -1124,11 +954,13 @@ export default function Home() {
                border border-white/20 bg-white/20 backdrop-blur-xl
                hover:bg-white/30 transition shadow-md"
               >
-                30 sek. demo (kā rodas “fallback”)
+                30 sek. demo (bez datu ievades)
               </button>
             </div>
 
-            <p className="text-sm text-slate-700 mt-4">Bez spiediena. Ja redzat jēgu — vienojamies par 20 min sarunu.</p>
+            <p className="text-sm text-slate-700 mt-4">
+              Šī ir pārbaude un atskaite, nevis “pārdošanas zvans”. Mēs parādām datus — lēmumu pieņemat jūs.
+            </p>
           </GlassCard>
         </div>
       </section>
@@ -1140,21 +972,143 @@ export default function Home() {
         </div>
       </section>
 
+      {/* TRUST CHECK (Lead) */}
+      <section id="trust-check" className="py-20 px-4">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-10">
+            <h2 className="text-4xl font-bold mb-3">Bezmaksas Personal AI Trust Check 1 darba dienas laikā</h2>
+            <p className="text-slate-700">Fokusā: fleboloģija. Iedodiet profila lapu un vārdu — atsūtām pārbaudi uz e-pastu.</p>
+          </div>
+
+          <GlassCard className="p-8">
+            <div className="grid md:grid-cols-2 gap-8">
+              <div>
+                <div className="text-lg font-semibold mb-4">Ko jūs saņemsiet:</div>
+                <div className="space-y-3">
+                  {[
+                    'Jūsu pieminēšana 5 tipiskos pacienta jautājumos',
+                    'Kādus citus flebologus AI min jūsu vietā (un kāpēc)',
+                    'Top-5 trūkstošie signāli (“fallback mode”)',
+                    'Rīcības plāns: ko publicēt un kur (1 mēnesim uz priekšu)',
+                  ].map((t, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-emerald-700 flex-shrink-0 mt-0.5" />
+                      <div className="text-slate-800">{t}</div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-6 rounded-2xl border border-blue-200/40 bg-blue-50/40 backdrop-blur-xl p-4">
+                  <div className="font-semibold text-slate-900">Svarīgi:</div>
+                  <p className="text-sm text-slate-800 mt-1">Mēs nepārņemam kontroli pār jūsu reputāciju — mēs parādām, ko AI šobrīd spēj droši pateikt.</p>
+                </div>
+
+                <div className="mt-6 rounded-2xl border border-white/20 bg-white/12 backdrop-blur-xl p-4">
+                  <div className="text-sm font-semibold text-slate-900">Specialitāte:</div>
+                  <div className="mt-1 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/25 px-3 py-1 text-sm font-bold">
+                    {SPECIALTY_LABEL}
+                  </div>
+                  <div className="mt-2 text-xs text-slate-600">
+                    Pirmā iterācija: tikai fleboloģija (lai ātri dabūtu perfektu piedāvājumu un flow).
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <form onSubmit={handleLeadSubmit} className="space-y-4">
+                  <input
+                    type="text"
+                    inputMode="url"
+                    autoCapitalize="none"
+                    autoCorrect="off"
+                    spellCheck={false}
+                    placeholder="Profila lapa (piem. klinika.lv/arsti/janis-berzins)"
+                    value={leadProfileUrl}
+                    onChange={(e) => {
+                      const v = e.target.value;
+                      setLeadProfileUrl(v);
+                      updateIdentity({ profileUrl: v.trim() || undefined });
+                    }}
+                    onBlur={() => setLeadProfileUrl(cleanUrlInput(leadProfileUrl))}
+                    className={inputBase}
+                    required
+                  />
+
+                  <input
+                    type="text"
+                    value={leadDoctor}
+                    onChange={(e) => {
+                      const v = e.target.value;
+                      setLeadDoctor(v);
+                      if (!doctorName.trim()) setDoctorName(v);
+                      updateIdentity({ doctor: v.trim() || undefined });
+                    }}
+                    placeholder="Ārsta vārds, uzvārds (piem. Juris Rīts)"
+                    className={inputBase}
+                  />
+
+                  <input
+                    type="email"
+                    value={leadEmail}
+                    onChange={(e) => {
+                      const v = e.target.value;
+                      setLeadEmail(v);
+                      updateIdentity({ email: v.trim() || undefined });
+                    }}
+                    placeholder="E-pasts (obligāti)"
+                    className={inputBase}
+                    required
+                  />
+
+                  <GlassButton type="submit" disabled={leadSubmitting} className="w-full">
+                    {leadSubmitting ? 'Nosūta...' : 'Saņemt Personal AI Trust Check'}
+                  </GlassButton>
+
+                  <div className="text-xs text-slate-700 leading-relaxed">
+                    Nosūtot, jūs piekrītat, ka saņemsiet rezultātus uz norādīto e-pastu. Bez spama. Varat atteikties jebkurā brīdī.
+                  </div>
+
+                  {leadSuccess && (
+                    <div className="p-4 rounded-2xl border border-emerald-200/50 bg-emerald-50/40 backdrop-blur-xl">
+                      <div className="flex items-start gap-2">
+                        <CheckCircle2 className="w-5 h-5 text-emerald-800 flex-shrink-0 mt-0.5" />
+                        <div className="text-emerald-900">
+                          <div className="font-semibold">Paldies! Pieprasījums saņemts.</div>
+                          <div className="text-sm mt-1">Rezultāti būs 1 darba dienas laikā.</div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </form>
+
+                <div className="mt-6 flex items-center justify-between gap-3">
+                  <div className="text-sm text-slate-700">Gribat uzreiz redzēt, ko AI saka?</div>
+                  <button
+                    onClick={() => document.getElementById('ai-checker')?.scrollIntoView({ behavior: 'smooth' })}
+                    className="rounded-2xl px-5 py-3 font-semibold text-white bg-slate-900/90 hover:bg-slate-900 shadow-md ring-1 ring-white/10 transition"
+                    type="button"
+                  >
+                    Paskatīties reālo AI testu →
+                  </button>
+                </div>
+              </div>
+            </div>
+          </GlassCard>
+        </div>
+      </section>
+
       {/* MINI CHECK */}
       <section id="mini-check" className="py-16 px-4">
         <div className="max-w-5xl mx-auto">
           <GlassCard className="p-8 border-blue-200/50">
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
               <div className="flex-1">
-                <h2 className="text-3xl md:text-4xl font-bold mb-2">Ātra AI-lasāmības pārbaude ārstam (10–15 sekundēs)</h2>
-                <p className="text-slate-700">
-                  Ievadiet savu profila lapu (klīnikas ārsta profilu / privātu lapu), un uzreiz redziet signālus, kas AI traucē
-                  droši Jūs nosaukt un pamatot.
-                </p>
+                <h2 className="text-3xl md:text-4xl font-bold mb-2">Ātra AI-lasāmības pārbaude (10–15 sekundēs)</h2>
+                <p className="text-slate-700">Ievadiet mājaslapu un uzreiz redziet signālus, kas AI traucē nolasīt saturu.</p>
               </div>
 
               <div className="md:w-[420px]">
-                <label className="block text-sm font-medium mb-2 text-slate-800">Profila lapa (URL)</label>
+                <label className="block text-sm font-medium mb-2 text-slate-800">Mājaslapa (URL)</label>
 
                 <form
                   className="flex gap-2"
@@ -1167,12 +1121,8 @@ export default function Home() {
                     type="text"
                     inputMode="url"
                     value={miniUrl}
-                    onChange={(e) => {
-                      const v = e.target.value;
-                      setMiniUrl(v);
-                      updateIdentity({ website: v.trim() || undefined });
-                    }}
-                    placeholder="piem. klinika.lv/arsti/..."
+                    onChange={(e) => setMiniUrl(e.target.value)}
+                    placeholder="klinika.lv"
                     className={cx('flex-1', inputBase)}
                   />
                   <GlassButton type="submit" disabled={miniLoading || !miniUrl.trim()} className="px-5 py-3">
@@ -1180,9 +1130,7 @@ export default function Home() {
                   </GlassButton>
                 </form>
 
-                <p className="text-xs text-slate-600 mt-2">
-                  Šis ir mini-check no publiskā satura (nevis pilnais audīts). Daļa profilu var nebūt pilnībā nolasāmi.
-                </p>
+                <p className="text-xs text-slate-600 mt-2">Mini-check = ātra tehniska + satura lasāmība (tas nav pilnais Trust Check).</p>
               </div>
             </div>
 
@@ -1246,10 +1194,10 @@ export default function Home() {
                   {pillars && (
                     <div className="mt-4 grid grid-cols-2 gap-3">
                       {[
-                        { k: 'access', label: 'Tehniskā pieejamība AI', hint: 'indeksācija / render / satura minimums' },
-                        { k: 'entitySchema', label: 'Identitātes struktūra', hint: 'ārsts / pakalpojumi / pieredze' },
-                        { k: 'trustSignals', label: 'Uzticamības signāli', hint: 'pierādāmi fakti, kontakti, profili' },
-                        { k: 'answerability', label: 'Vai AI var droši atbildēt par Jums', hint: 'FAQ, skaidrs saturs pacientam' },
+                        { k: 'access', label: 'Tehniskā pieejamība', hint: 'indeksācija / render / satura minimums' },
+                        { k: 'entitySchema', label: 'Identitāte', hint: 'ārsts / pakalpojumi / metodes' },
+                        { k: 'trustSignals', label: 'Uzticamība', hint: 'pierādāmi signāli, kontakti' },
+                        { k: 'answerability', label: 'Atbildamība', hint: 'FAQ, skaidrs saturs' },
                       ].map((p) => {
                         const v = (pillars as any)?.[p.k] ?? 0;
                         const tone = pillarTone(v);
@@ -1292,7 +1240,7 @@ export default function Home() {
 
                         return (
                           <div className="space-y-2">
-                            <div className="text-sm font-semibold text-slate-900">Ko tas nozīmē praksē:</div>
+                            <div className="text-sm font-semibold text-slate-900">Ko tas nozīmē ārstam:</div>
 
                             <div className="text-sm text-slate-800">
                               <span className={cx('inline-flex items-center gap-2 rounded-full border px-3 py-1 mr-2', s.border, s.bg)}>
@@ -1305,7 +1253,9 @@ export default function Home() {
 
                             <div className="pt-3 border-t border-white/20">
                               <div className="text-sm font-semibold text-slate-900">Nākamais solis:</div>
-                              <div className="text-sm text-slate-800">Personal AI Trust Check (audits + plāns) — 24h.</div>
+                              <div className="text-sm text-slate-800">
+                                Personal AI Trust Check (fleboloģija) – 1 darba dienā.
+                              </div>
                             </div>
                           </div>
                         );
@@ -1346,13 +1296,6 @@ export default function Home() {
                           AI neceļ uzticību no nulles. Tas tikai atpazīst uzticību, ja tā jau ir{' '}
                           <span className="font-semibold">publiski pierādāma un konsekventa</span>.
                         </p>
-                        <p>
-                          Ja signāli ir fragmentēti, pretrunīgi vai izklausās pēc mārketinga bez faktiem, AI izvēlas drošāku ceļu —
-                          <span className="font-semibold"> nemin vārdu</span> vai <span className="font-semibold">iesaka citus</span>.
-                        </p>
-                        <p className="text-xs text-amber-800/80">
-                          Šis mini-check rāda, kā situāciju redz <span className="font-semibold">parasts pacients</span>, nevis nozares kolēģis.
-                        </p>
                       </div>
                     </div>
                   )}
@@ -1373,7 +1316,7 @@ export default function Home() {
 
                   <div className="mt-6 pt-5 border-t border-white/20 space-y-3">
                     <button
-                      onClick={() => document.getElementById('audit')?.scrollIntoView({ behavior: 'smooth' })}
+                      onClick={() => document.getElementById('trust-check')?.scrollIntoView({ behavior: 'smooth' })}
                       className={cx(
                         'w-full group relative overflow-hidden rounded-3xl px-7 py-5 text-left',
                         'text-white font-extrabold',
@@ -1393,14 +1336,12 @@ export default function Home() {
                         <span className="flex-1">
                           <span className="flex items-center justify-between gap-3">
                             <span className="leading-snug">
-                              Saņemt Personal AI Trust Check (audits + plāns)
+                              Saņemt Personal AI Trust Check (1 darba dienā)
                               <span className="inline-block group-hover:translate-x-0.5 transition-transform"> →</span>
                             </span>
                             <span className="shrink-0 rounded-full bg-white/22 px-3 py-1 text-xs font-extrabold ring-1 ring-white/30">24h</span>
                           </span>
-                          <span className="block text-sm font-medium text-white/85 mt-1">
-                            Bez spiediena. Ja redzat jēgu — vienojamies par 20 min sarunu.
-                          </span>
+                          <span className="block text-sm font-medium text-white/85 mt-1">Fleboloģija • ārsta pieminēšana AI atbildēs</span>
                         </span>
                       </span>
                     </button>
@@ -1433,7 +1374,7 @@ export default function Home() {
                             <span className="shrink-0 rounded-full bg-white/22 px-3 py-1 text-xs font-extrabold ring-1 ring-white/30">10 sek.</span>
                           </span>
 
-                          <span className="block text-sm font-medium text-white/85 mt-1">Ātrs “proof” bez pilnā audita gaidīšanas.</span>
+                          <span className="block text-sm font-medium text-white/85 mt-1">Ātrs “proof” bez pilnā check gaidīšanas.</span>
                         </span>
                       </span>
                     </button>
@@ -1448,242 +1389,71 @@ export default function Home() {
       {/* COST */}
       <section className="py-16 px-4" id="cost">
         <div className="max-w-6xl mx-auto">
-          <div className="max-w-3xl mx-auto text-center mb-8">
-            <h2 className="text-3xl md:text-4xl font-bold">Kāpēc tas kļūst kritiski arī ārstiem</h2>
-            <p className="text-slate-700 mt-3 leading-relaxed">
-              Pat ja Jūs personīgi netērējat reklāmām, pacients bieži sāk ar AI. Ja AI nespēj droši nosaukt Jūs, Jūs vienkārši neesat “kandidātos”.
-              Zemāk esošā sadaļa ilustrē, kā mainās pieprasījuma plūsma praksē.
-            </p>
-          </div>
-
           <AICostComparison />
-        </div>
-      </section>
-
-      {/* AUDIT */}
-      <section id="audit" className="py-20 px-4">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-10">
-            <h2 className="text-4xl font-bold mb-3">Bezmaksas Personal AI Trust Check 1 darba dienas laikā</h2>
-            <p className="text-slate-700">
-              Saņemiet skaidru atbildi: vai AI spēj droši nosaukt Jūs pacienta jautājumos, un kāpēc tas dažreiz izvēlas citus.
-            </p>
-          </div>
-
-          <GlassCard className="p-8">
-            <div className="grid md:grid-cols-2 gap-8">
-              <div>
-                <div className="text-lg font-semibold mb-4">Ko jūs saņemsiet:</div>
-                <div className="space-y-3">
-                  {[
-                    'Jūsu pieminēšana 5 tipiskos pacienta jautājumos',
-                    'Kādus citus speciālistus AI min Jūsu vietā (un kāpēc)',
-                    'Top-5 trūkstošie signāli, kas izraisa “fallback mode”',
-                    'Rīcības plāns: ko publicēt un kur (1 mēnesim uz priekšu)',
-                  ].map((t, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <CheckCircle2 className="w-5 h-5 text-emerald-700 flex-shrink-0 mt-0.5" />
-                      <div className="text-slate-800">{t}</div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-6 rounded-2xl border border-blue-200/40 bg-blue-50/40 backdrop-blur-xl p-4">
-                  <div className="font-semibold text-slate-900">Svarīgi:</div>
-                  <p className="text-sm text-slate-800 mt-1">
-                    Šī ir pārbaude un atskaite, nevis “pārdošanas zvans”. Mēs parādām datus — lēmumu pieņemat jūs.
-                  </p>
-                </div>
-              </div>
-
-              <div>
-                <form onSubmit={handleLeadSubmit} className="space-y-4">
-                  <input
-                    type="text"
-                    inputMode="text"
-                    autoCapitalize="none"
-                    autoCorrect="off"
-                    spellCheck={false}
-                    autoComplete="url"
-                    placeholder="Profila lapa (piem. klinika.lv/arsti/...)"
-                    value={leadWebsite}
-                    onChange={(e) => {
-                      const v = e.target.value;
-                      setLeadWebsite(v);
-                      updateIdentity({ website: v.trim() || undefined });
-                    }}
-                    onBlur={() => setLeadWebsite(cleanDomainInput(leadWebsite))}
-                    className={inputBase}
-                    required
-                    onInvalid={(e) =>
-                      (e.currentTarget as HTMLInputElement).setCustomValidity('Lūdzu ievadiet domēnu (piem. clinic.lv)')
-                    }
-                    onInput={(e) => (e.currentTarget as HTMLInputElement).setCustomValidity('')}
-                  />
-
-                  <select
-                    value={leadSpecialty}
-                    onChange={(e) => {
-                      const v = e.target.value;
-                      setLeadSpecialty(v);
-                      if (v) setSpecialty(v);
-                      updateIdentity({ specialty: v || undefined });
-                    }}
-                    className={selectBase}
-                  >
-                    <option value="">Izvēlieties specializāciju (optional)</option>
-                    {specialties.map((s) => (
-                      <option key={s.value} value={s.value}>
-                        {s.label}
-                      </option>
-                    ))}
-                  </select>
-
-                  <input
-                    type="text"
-                    value={leadClinic}
-                    onChange={(e) => {
-                      const v = e.target.value;
-                      setLeadClinic(v);
-                      if (!clinicName.trim()) setClinicName(v);
-                      updateIdentity({ clinic: v.trim() || undefined });
-                    }}
-                    placeholder="Ārsta vārds, uzvārds (optional)"
-                    className={inputBase}
-                  />
-
-                  <input
-                    type="email"
-                    value={leadEmail}
-                    onChange={(e) => {
-                      const v = e.target.value;
-                      setLeadEmail(v);
-                      updateIdentity({ email: v.trim() || undefined });
-                    }}
-                    placeholder="E-pasts (obligāti)"
-                    className={inputBase}
-                    required
-                  />
-
-                  <GlassButton type="submit" disabled={leadSubmitting} className="w-full">
-                    {leadSubmitting ? 'Nosūta...' : 'Saņemt Personal AI Trust Check'}
-                  </GlassButton>
-
-                  <div className="text-xs text-slate-700 leading-relaxed">
-                    Nosūtot, jūs piekrītat, ka saņemsiet rezultātus uz norādīto e-pastu. Bez spama. Jūs varat atteikties jebkurā brīdī.
-                  </div>
-
-                  {leadSuccess && (
-                    <div className="p-4 rounded-2xl border border-emerald-200/50 bg-emerald-50/40 backdrop-blur-xl">
-                      <div className="flex items-start gap-2">
-                        <CheckCircle2 className="w-5 h-5 text-emerald-800 flex-shrink-0 mt-0.5" />
-                        <div className="text-emerald-900">
-                          <div className="font-semibold">Paldies! Pieprasījums saņemts.</div>
-                          <div className="text-sm mt-1">Rezultāti būs 1 darba dienas laikā.</div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </form>
-              </div>
-            </div>
-
-            <div className="mt-8 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
-              <div className="text-sm text-slate-700">Gribat uzreiz redzēt, ko AI saka? Zemāk ir “reālais AI tests”.</div>
-              <button
-                onClick={() => document.getElementById('ai-checker')?.scrollIntoView({ behavior: 'smooth' })}
-                className="rounded-2xl px-5 py-3 font-semibold text-white bg-slate-900/90 hover:bg-slate-900 shadow-md ring-1 ring-white/10 transition"
-                type="button"
-              >
-                Paskatīties reālo AI testu →
-              </button>
-            </div>
-          </GlassCard>
         </div>
       </section>
 
       {/* AI TEST */}
       <section id="ai-checker" className="py-20 px-4">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-4">Pārbaudiet paši: ko AI iesaka pacienta jautājumā</h2>
-          <p className="text-center text-slate-700 mb-12">Reāla atbilde no ChatGPT un Claude</p>
+          <h2 className="text-4xl font-bold text-center mb-3">Pārbaudiet paši: ko AI iesaka fleboloģijā</h2>
+          <p className="text-center text-slate-700 mb-10">
+            Reāla atbilde no ChatGPT un Claude. (Pirmā iterācija: tikai fleboloģija.)
+          </p>
 
           <GlassCard className="p-8">
             <div className="space-y-4 mb-6">
-              <div>
-                <label className="block text-sm font-medium mb-2 text-slate-800">Izvēlieties specialitāti:</label>
-                <select
-                  value={specialty}
-                  onChange={(e) => {
-                    const v = e.target.value;
-                    setSpecialty(v);
-                    if (!leadSpecialty) setLeadSpecialty(v);
-                    updateIdentity({ specialty: v || undefined });
-                  }}
-                  className={selectBase}
-                >
-                  {specialties.map((s) => (
-                    <option key={s.value} value={s.value}>
-                      {s.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <div className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-xl p-4 ring-1 ring-white/10">
+                <div className="flex items-center justify-between mb-3 text-sm text-slate-700">
+                  <span>
+                    Nezini, ko rakstīt? Spied <span className="font-semibold">🎲</span> — ieliksim tipisku pacienta jautājumu.
+                  </span>
 
-              <div>
-                <label className="block text-sm font-medium mb-2 text-slate-800">Jautājums AI:</label>
-
-                <div className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-xl p-4 ring-1 ring-white/10">
-                  <div className="flex items-center justify-between mb-3 text-sm text-slate-700">
-                    <span>
-                      Nezini, ko rakstīt? Spied <span className="font-semibold">🎲</span> — ieliksim tipisku pacienta jautājumu.
+                  <button
+                    type="button"
+                    onClick={handleRandomQuery}
+                    className={cx(
+                      'h-10 w-10 inline-flex items-center justify-center rounded-2xl',
+                      'border border-white/20 bg-white/14 backdrop-blur-xl',
+                      'ring-1 ring-white/10 text-slate-900',
+                      'hover:bg-white/20 transition'
+                    )}
+                    title="Ģenerēt jautājumu"
+                    aria-label="Ģenerēt jautājumu"
+                  >
+                    <span aria-hidden className="text-lg leading-none">
+                      🎲
                     </span>
-
-                    <button
-                      type="button"
-                      onClick={handleRandomQuery}
-                      className={cx(
-                        'h-10 w-10 inline-flex items-center justify-center rounded-2xl',
-                        'border border-white/20 bg-white/14 backdrop-blur-xl',
-                        'ring-1 ring-white/10 text-slate-900',
-                        'hover:bg-white/20 transition'
-                      )}
-                      title="Ģenerēt jautājumu"
-                      aria-label="Ģenerēt jautājumu"
-                    >
-                      <span aria-hidden className="text-lg leading-none">
-                        🎲
-                      </span>
-                    </button>
-                  </div>
-
-                  <input
-                    id="ai-question"
-                    type="text"
-                    value={queryInput}
-                    onChange={(e) => setQueryInput(e.target.value)}
-                    placeholder="Kur ārstēt vēnu varikozi Latvijā?"
-                    className={inputBase}
-                  />
+                  </button>
                 </div>
+
+                <label className="block text-sm font-medium mb-2 text-slate-800">Jautājums AI:</label>
+                <input
+                  id="ai-question"
+                  type="text"
+                  value={queryInput}
+                  onChange={(e) => setQueryInput(e.target.value)}
+                  placeholder="Kur Rīgā pieņem augsti kvalificēts flebologs?"
+                  className={inputBase}
+                />
               </div>
 
               <div>
                 <label className="block text-sm font-medium mb-2 text-slate-800">Ārsta vārds, uzvārds (optional):</label>
                 <input
                   type="text"
-                  value={clinicName}
+                  value={doctorName}
                   onChange={(e) => {
                     const v = e.target.value;
-                    setClinicName(v);
-                    if (!leadClinic.trim()) setLeadClinic(v);
-                    updateIdentity({ clinic: v.trim() || undefined });
+                    setDoctorName(v);
+                    if (!leadDoctor.trim()) setLeadDoctor(v);
+                    updateIdentity({ doctor: v.trim() || undefined });
                   }}
-                  placeholder="Piemēram: Ints Bruņenieks"
+                  placeholder="Piemēram: Juris Rīts"
                   className={inputBase}
                 />
-                <div className="mt-2 text-xs text-slate-600 leading-relaxed">
-                  * AI ne vienmēr min ārstu vārdus. Ja vārds nav minēts, tas bieži nozīmē, ka publiskie signāli par Jūsu praksi nav pietiekami citējami.
+                <div className="mt-2 text-xs text-slate-600">
+                  * AI ne vienmēr min ārstu vārdus. Ja vārds nav minēts, tas bieži nozīmē, ka publiskie signāli par praksi nav pietiekami citējami.
                 </div>
               </div>
             </div>
@@ -1719,14 +1489,14 @@ export default function Home() {
                   <ul className="list-disc pl-5 space-y-1">
                     <li>ChatGPT un Claude darbojas atšķirīgi</li>
                     <li>Jautājuma formulējums maina ieteikumus</li>
-                    <li>Atbilde pacientam ≠ atbilde ekspertam</li>
+                    <li>Atbilde pacientam ≠ atbilde profesionālim</li>
                   </ul>
 
                   <GlassButton
-                    onClick={() => document.getElementById('audit')?.scrollIntoView({ behavior: 'smooth' })}
+                    onClick={() => document.getElementById('trust-check')?.scrollIntoView({ behavior: 'smooth' })}
                     className="mt-3 w-full bg-slate-900"
                   >
-                    Vēlies Personal AI Trust Check (24h)?
+                    Vēlies Personal AI Trust Check (1 darba dienā)?
                   </GlassButton>
                 </div>
               )}
@@ -1752,7 +1522,7 @@ export default function Home() {
                       <div className="w-10 h-10 rounded-full bg-emerald-500/15 border border-white/25 backdrop-blur-xl flex items-center justify-center flex-shrink-0">
                         <span className="text-xl">🤖</span>
                       </div>
-                      <div className="flex-1">
+                      <div className="flex-1 min-w-0">
                         <div className="font-bold text-lg mb-2 text-emerald-900">ChatGPT atbilde:</div>
 
                         {aiResults.chatgpt.success ? (
@@ -1762,27 +1532,25 @@ export default function Home() {
                                 <div className="flex-1 min-w-0">
                                   <div className="text-sm font-semibold text-slate-900">Kopsavilkums</div>
 
-                                  {clinicName ? (
+                                  {doctorName ? (
                                     aiResults.userClinicFound?.chatgpt ? (
                                       <div className="mt-2 flex items-center gap-2 text-emerald-900 font-semibold">
                                         <CheckCircle2 className="w-5 h-5" />
-                                        <span>Jūs esat minēts</span>
+                                        <span>Ārsts ir minēts</span>
                                       </div>
                                     ) : (
                                       <div className="mt-2 flex items-center gap-2 text-red-800 font-semibold">
                                         <AlertCircle className="w-5 h-5" />
-                                        <span>Jūs neesat minēts</span>
+                                        <span>Ārsts nav minēts</span>
                                       </div>
                                     )
                                   ) : (
-                                    <div className="mt-2 text-sm text-slate-700">
-                                      Ievadiet ārsta vārdu, lai pārbaudītu “vai minēts”.
-                                    </div>
+                                    <div className="mt-2 text-sm text-slate-700">Ievadi ārsta vārdu, lai pārbaudītu “vai minēts”.</div>
                                   )}
 
                                   {aiResults.chatgpt.clinics?.length > 0 && (
                                     <div className="mt-3">
-                                      <div className="text-xs font-semibold text-slate-700 mb-1">3 minētās alternatīvas:</div>
+                                      <div className="text-xs font-semibold text-slate-700 mb-1">3 minētie varianti:</div>
                                       <div className="flex flex-wrap gap-2">
                                         {aiResults.chatgpt.clinics.slice(0, 3).map((c: string, i: number) => (
                                           <span key={i} className="text-xs rounded-full bg-white/25 border border-white/20 px-3 py-1">
@@ -1790,12 +1558,6 @@ export default function Home() {
                                           </span>
                                         ))}
                                       </div>
-                                    </div>
-                                  )}
-
-                                  {clinicName && !aiResults.userClinicFound?.chatgpt && (
-                                    <div className="mt-3 text-xs text-slate-700 leading-relaxed">
-                                      Tas bieži nozīmē, ka publiskie signāli par Jūsu praksi nav pietiekami skaidri/citējami šim jautājumam.
                                     </div>
                                   )}
                                 </div>
@@ -1817,7 +1579,7 @@ export default function Home() {
                             </div>
 
                             {showGptFull && (
-                              <div className="rounded-2xl border border-white/20 bg-white/14 backdrop-blur-xl p-4 mb-4 text-sm text-slate-900 whitespace-pre-wrap break-words">
+                              <div className="rounded-2xl border border-white/20 bg-white/14 backdrop-blur-xl p-4 mb-4 text-sm text-slate-900 whitespace-pre-wrap break-words overflow-hidden">
                                 {aiResults.chatgpt.fullResponse}
                               </div>
                             )}
@@ -1836,7 +1598,7 @@ export default function Home() {
                       <div className="w-10 h-10 rounded-full bg-blue-500/15 border border-white/25 backdrop-blur-xl flex items-center justify-center flex-shrink-0">
                         <span className="text-xl">🧠</span>
                       </div>
-                      <div className="flex-1">
+                      <div className="flex-1 min-w-0">
                         <div className="font-bold text-lg mb-2 text-blue-900">Claude atbilde:</div>
 
                         {aiResults.claude.success ? (
@@ -1846,27 +1608,25 @@ export default function Home() {
                                 <div className="flex-1 min-w-0">
                                   <div className="text-sm font-semibold text-slate-900">Kopsavilkums</div>
 
-                                  {clinicName ? (
+                                  {doctorName ? (
                                     aiResults.userClinicFound?.claude ? (
                                       <div className="mt-2 flex items-center gap-2 text-emerald-900 font-semibold">
                                         <CheckCircle2 className="w-5 h-5" />
-                                        <span>Jūs esat minēts</span>
+                                        <span>Ārsts ir minēts</span>
                                       </div>
                                     ) : (
                                       <div className="mt-2 flex items-center gap-2 text-red-800 font-semibold">
                                         <AlertCircle className="w-5 h-5" />
-                                        <span>Jūs neesat minēts</span>
+                                        <span>Ārsts nav minēts</span>
                                       </div>
                                     )
                                   ) : (
-                                    <div className="mt-2 text-sm text-slate-700">
-                                      Ievadiet ārsta vārdu, lai pārbaudītu “vai minēts”.
-                                    </div>
+                                    <div className="mt-2 text-sm text-slate-700">Ievadi ārsta vārdu, lai pārbaudītu “vai minēts”.</div>
                                   )}
 
                                   {aiResults.claude.clinics?.length > 0 && (
                                     <div className="mt-3">
-                                      <div className="text-xs font-semibold text-slate-700 mb-1">3 minētās alternatīvas:</div>
+                                      <div className="text-xs font-semibold text-slate-700 mb-1">3 minētie varianti:</div>
                                       <div className="flex flex-wrap gap-2">
                                         {aiResults.claude.clinics.slice(0, 3).map((c: string, i: number) => (
                                           <span key={i} className="text-xs rounded-full bg-white/25 border border-white/20 px-3 py-1">
@@ -1874,12 +1634,6 @@ export default function Home() {
                                           </span>
                                         ))}
                                       </div>
-                                    </div>
-                                  )}
-
-                                  {clinicName && !aiResults.userClinicFound?.claude && (
-                                    <div className="mt-3 text-xs text-slate-700 leading-relaxed">
-                                      Tas bieži nozīmē, ka publiskie signāli par Jūsu praksi nav pietiekami skaidri/citējami šim jautājumam.
                                     </div>
                                   )}
                                 </div>
@@ -1901,7 +1655,7 @@ export default function Home() {
                             </div>
 
                             {showClaudeFull && (
-                              <div className="rounded-2xl border border-white/20 bg-white/14 backdrop-blur-xl p-4 mb-4 text-sm text-slate-900 whitespace-pre-wrap break-words">
+                              <div className="rounded-2xl border border-white/20 bg-white/14 backdrop-blur-xl p-4 mb-4 text-sm text-slate-900 whitespace-pre-wrap break-words overflow-hidden">
                                 {aiResults.claude.fullResponse}
                               </div>
                             )}
@@ -1918,14 +1672,18 @@ export default function Home() {
                   <h3 className="font-bold text-lg mb-3">📊 Kopsavilkums</h3>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between gap-4">
+                      <span className="text-slate-700">Specialitāte:</span>
+                      <span className="font-semibold text-slate-900 text-right">{SPECIALTY_LABEL}</span>
+                    </div>
+                    <div className="flex justify-between gap-4">
                       <span className="text-slate-700">Jautājums:</span>
                       <span className="font-semibold text-slate-900 text-right">{queryInput}</span>
                     </div>
-                    {clinicName && (
+                    {doctorName && (
                       <>
                         <div className="flex justify-between gap-4">
-                          <span className="text-slate-700">Jūs (ārsts):</span>
-                          <span className="font-semibold text-slate-900">{clinicName}</span>
+                          <span className="text-slate-700">Ārsts:</span>
+                          <span className="font-semibold text-slate-900">{doctorName}</span>
                         </div>
                         <div className="flex justify-between pt-2 border-t border-white/20">
                           <span className="text-slate-700">Rezultāts:</span>
@@ -1943,10 +1701,10 @@ export default function Home() {
                 </GlassCard>
 
                 <GlassButton
-                  onClick={() => document.getElementById('audit')?.scrollIntoView({ behavior: 'smooth' })}
+                  onClick={() => document.getElementById('trust-check')?.scrollIntoView({ behavior: 'smooth' })}
                   className="w-full bg-gradient-to-b from-purple-500/95 via-purple-600/95 to-indigo-700/95 shadow-[0_10px_30px_rgba(124,58,237,0.22)]"
                 >
-                  Saņemt Personal AI Trust Check + rīcības plānu →
+                  Saņemt Personal AI Trust Check → (1 darba dienā)
                 </GlassButton>
 
                 <p className="text-xs text-slate-700">Piezīme: AI atbildes var atšķirties atkarībā no jautājuma formulējuma un modeļa.</p>
@@ -1994,11 +1752,11 @@ export default function Home() {
           <div className="grid gap-6 md:grid-cols-3">
             <div>
               <div className="flex items-center">
-                <img src="/brand/lucera.png" alt="Lucera" className="h-9 w-auto" />
+                <img src="/brand/lucera.png" alt="Lucera" className="h-10 w-auto" />
               </div>
 
               <p className="mt-2 text-sm text-slate-600">
-                Personal AI Trust Check ārstiem un publiskās informācijas strukturēšana, lai AI asistenti varētu korekti un droši ieteikt.
+                Personal AI Trust Check ārstiem + publiskās informācijas strukturēšana, lai AI korekti un droši jūs min pacienta jautājumos.
               </p>
             </div>
 
@@ -2065,7 +1823,7 @@ export default function Home() {
             <GlassCard className="p-6 md:p-8">
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <div className="text-xs text-slate-600 mb-1">30 sek. DEMO (bez datu ievades)</div>
+                  <div className="text-xs text-slate-600 mb-1">30 sek. DEMO (ārsts • fleboloģija)</div>
                   <h3 className="text-xl md:text-2xl font-bold text-slate-900">{demoScreens[demoStep].title}</h3>
                 </div>
                 <button
@@ -2107,11 +1865,11 @@ export default function Home() {
                   <GlassButton
                     onClick={() => {
                       closeDemo();
-                      document.getElementById('mini-check')?.scrollIntoView({ behavior: 'smooth' });
+                      document.getElementById('trust-check')?.scrollIntoView({ behavior: 'smooth' });
                     }}
                     className="px-5 py-3"
                   >
-                    Pārbaudīt manu profilu →
+                    Saņemt Trust Check →
                   </GlassButton>
                 )}
               </div>
