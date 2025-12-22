@@ -12,11 +12,12 @@ const SPECIALTY_VALUE = 'fleboloģija';
 const SPECIALTY_LABEL = 'Fleboloģija';
 
 const preGeneratedQueries: string[] = [
-  'Kur Rīgā pieņem augsti kvalificēts flebologs?',
-  'Kur ārstēt vēnu varikozi Latvijā?',
-  'Labākais flebologs Rīgā',
-  'Kur ārstēt kāju vēnas Rīgā?',
-  'Kādas ir vēnu operācijas cenas?',
+  'Kurš vēnu ārsts Rīgā ir uzticams un kvalificēts?',
+  'Pie kura vēnu ārsta ir lētākās cenas?',
+  'Pie kura flebologa Rīgā vislabāk pierakstīties?',
+  'Kur Rīgā atrast pieredzējušu flebologu vēnu varikozes ārstēšanai?',
+  'Kurš flebologs specializējas lāzeroperācijās Rīgā?',
+  'Kurš ārsts vislabāk izskaidro ārstēšanas iespējas un plānu vēnu problēmām?',
 ];
 
 function getRandomQuery(): string {
@@ -928,7 +929,7 @@ export default function Home() {
               {[
                 'Jūsu pieminēšana 5 tipiskos pacientu jautājumos',
                 'Kādus citus flebologus AI min jūsu vietā (un kāpēc)',
-                'Top-5 trūkstošie signāli, kas izraisa “fallback mode”',
+                'Top-5 trūkstošie signāli, kas izraisa Ai apjukšanu un “fallback mode”',
                 'Rīcības plāns: ko publicēt un kur (1 mēnesim uz priekšu)',
               ].map((t, i) => (
                 <div key={i} className="flex items-center gap-3">
@@ -1043,7 +1044,7 @@ export default function Home() {
                       if (!doctorName.trim()) setDoctorName(v);
                       updateIdentity({ doctor: v.trim() || undefined });
                     }}
-                    placeholder="Ārsta vārds, uzvārds (piem. Juris Rīts)"
+                    placeholder="Ārsta vārds, uzvārds (piem. Jānis Bērziņš)"
                     className={inputBase}
                   />
 
@@ -1449,7 +1450,7 @@ export default function Home() {
                     if (!leadDoctor.trim()) setLeadDoctor(v);
                     updateIdentity({ doctor: v.trim() || undefined });
                   }}
-                  placeholder="Piemēram: Juris Rīts"
+                  placeholder="Piemēram: Jānis Bērziņš"
                   className={inputBase}
                 />
                 <div className="mt-2 text-xs text-slate-600">
