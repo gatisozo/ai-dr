@@ -31,7 +31,7 @@ export default function AIVisibilityCards() {
                     />
                   </svg>
                 </div>
-                <div className="text-sm font-semibold text-white/80 tracking-wide">AI JAUTĀJUMS</div>
+                <div className="text-sm font-semibold text-white/80 tracking-wide">JAUTĀJUMS AI</div>
               </div>
               <p className="text-white text-lg font-medium leading-relaxed">
                 &quot;Kurš ārsts piedāvā labāko vēnu ārstēšanu Rīgā?&quot;
@@ -57,7 +57,7 @@ export default function AIVisibilityCards() {
               </div>
 
               <div className="space-y-4">
-                {['Veselības centrs 4', 'ARS', 'Dinsbergas klīnika'].map((name, i) => (
+                {['Veselības centrs 4', 'ARS', 'dr. Jānis Bērziņš'].map((name, i) => (
                   <div key={name} className="flex items-start gap-3">
                     <span className="text-white/90 font-bold text-lg flex-shrink-0">{i + 1}.</span>
                     <span className="text-white/90 font-medium">{name}</span>
@@ -81,7 +81,7 @@ export default function AIVisibilityCards() {
                     />
                   </svg>
                 </div>
-                <div className="text-sm font-semibold text-red-200 tracking-wide">JŪS</div>
+                <div className="text-sm font-semibold text-red-200 tracking-wide"> </div>
               </div>
 
               <div className="flex items-center gap-3 mb-6">
