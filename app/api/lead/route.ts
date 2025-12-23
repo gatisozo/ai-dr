@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     // Sūtām pieteikumu TEV (go@lucera.site)
     const r = await resend.emails.send({
       // NOTE: šis domain jābūt verified Resendā
-      from: 'Lucera Audit <reports@lucera.site>',
+      from: 'Lucera Dr. Test <reports@lucera.site>',
       to: ['go@lucera.site'],
       replyTo: email,
       subject: 'Jauns bezmaksas audita pieteikums',

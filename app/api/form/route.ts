@@ -7,7 +7,7 @@ export async function POST(req: Request) {
   const { email, url } = await req.json();
 
   await resend.emails.send({
-    from: "Lucera Audit <reports@lucera.site>", // šis būs jāpārbauda Resendā kā verified sender
+    from: "Lucera Dr. test <reports@lucera.site>", // šis būs jāpārbauda Resendā kā verified sender
     to: ["go@lucera.site"],
     replyTo: email,
     subject: "Jauns bezmaksas audita pieteikums",
