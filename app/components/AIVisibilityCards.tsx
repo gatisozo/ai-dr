@@ -34,7 +34,7 @@ export default function AIVisibilityCards() {
                 <div className="text-sm font-semibold text-white/80 tracking-wide">AI JAUTĀJUMS</div>
               </div>
               <p className="text-white text-lg font-medium leading-relaxed">
-                &quot;Kāda klīnika piedāvā labāko vēnu ārstēšanu Rīgā?&quot;
+                &quot;Kurš ārsts piedāvā labāko vēnu ārstēšanu Rīgā?&quot;
               </p>
             </div>
           </div>
@@ -81,15 +81,15 @@ export default function AIVisibilityCards() {
                     />
                   </svg>
                 </div>
-                <div className="text-sm font-semibold text-red-200 tracking-wide">JŪSU KLĪNIKA</div>
+                <div className="text-sm font-semibold text-red-200 tracking-wide">JŪS</div>
               </div>
 
               <div className="flex items-center gap-3 mb-6">
-                <span className="text-white text-2xl font-bold">Jūsu klīnika</span>
+                <span className="text-white text-2xl font-bold">Jūs</span>
                 <span className="text-4xl">❌</span>
               </div>
 
-              <div className="text-red-100/90 text-sm italic">Nav minēta AI atbildē</div>
+              <div className="text-red-100/90 text-sm italic">Neesat minēts AI atbildē</div>
             </div>
           </div>
         </div>
