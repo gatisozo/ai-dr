@@ -973,7 +973,7 @@ export default function Home() {
             {/* ✅ Saīsināts (noņemam dublēšanos) */}
             <div className="space-y-3 mb-8 text-left max-w-xl mx-auto">
               {[
-                'Pārbaude 15 tipiskos pacienta jautājumos',
+                'Pārbaude 5 tipiskos pacienta jautājumos',
                 '“Fallback mode”, jeb AI "stāsta muļķības" -kāpēc tā un iemesli: kāpēc AI izvēlas citus ārstus',
                 
               ].map((t, i) => (
@@ -1058,7 +1058,7 @@ export default function Home() {
                   <div className="text-sm font-semibold text-slate-900 mb-3">Kā notiek (3 soļi):</div>
                   <ol className="space-y-2 text-sm text-slate-800 list-decimal pl-5">
                     <li>Iedodat profila lapu + vārdu.</li>
-                    <li>Pārbaudām 15 tipiskus pacienta jautājumus + AI “fallback mode” iemeslus.</li>
+                    <li>Pārbaudām 5 tipiskus pacienta jautājumus + AI “fallback mode” iemeslus.</li>
                     <li>Atsūtām atskaiti ar top-5 signāliem + 1 mēneša plānu kā rīkoties.</li>
                   </ol>
                 </div>
