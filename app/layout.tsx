@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import CookieBanner from './components/CookieBanner';
-import GASnippet from './components/GASnippet';
+import CookieBanner from "./components/CookieBanner";
+import GASnippet from "./components/GASnippet";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,35 +15,35 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://ai.lucera.site"),
+  metadataBase: new URL("https://ai-dr.lucera.site"),
 
   title: {
-    default: "AI Visibility Checker klīnikām | Vai AI iesaka jūsu klīniku?",
-    template: "%s | AI Visibility Checker",
+    default: "Lucera — Personal AI Trust Check ārstam",
+    template: "%s — Lucera",
   },
 
   description:
-    "Pārbaudiet, vai ChatGPT, Claude un Perplexity iesaka jūsu klīniku pacientiem. Bezmaksas AI redzamības audits ar konkurentu salīdzinājumu 24h laikā.",
+    "AI reputācijas audits ārstam: mini-check (5–10 sek.), reālais AI tests (10 sek.) un bezmaksas Personal AI Trust Check 1 darba dienā. Uzzini, vai AI spēj droši sasaistīt tavu vārdu ar specialitāti, metodēm un kompetenci pacienta jautājumos.",
 
   alternates: {
-    canonical: "https://ai.lucera.site/",
+    canonical: "https://ai-dr.lucera.site/",
   },
 
   openGraph: {
     type: "website",
-    url: "https://ai.lucera.site/",
-    title: "Vai AI iesaka jūsu klīniku pacientiem?",
+    url: "https://ai-dr.lucera.site/",
+    title: "Lucera — Personal AI Trust Check ārstam",
     description:
-      "Pacienti arvien biežāk jautā AI, kuru klīniku izvēlēties. Uzziniet, vai jūsu klīnika ir redzama AI ieteikumos.",
-    siteName: "AI Visibility Checker",
+      "Pacienti arvien biežāk jautā AI, pie kura ārsta pierakstīties. Pārbaudi realitāti ar mini-check un reālo AI testu, un saņem bezmaksas Trust Check 1 darba dienā.",
+    siteName: "Lucera",
     locale: "lv_LV",
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "AI redzamība klīnikām | AI Visibility Checker",
+    title: "Lucera — Personal AI Trust Check ārstam",
     description:
-      "Uzziniet, ko ChatGPT, Claude un Perplexity saka par jūsu klīniku. Bezmaksas audits + 3 konkurentu salīdzinājums.",
+      "Mini-check (5–10 sek.), AI tests (10 sek.) un bezmaksas Trust Check 1 darba dienā. Saprotami iemesli + 30 dienu rīcības plāns.",
   },
 
   robots: {
