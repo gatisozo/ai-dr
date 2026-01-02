@@ -25,6 +25,15 @@ const SPECIALTY_LABEL = 'Fleboloģija';
 
 const PRODUCT_LABEL = 'Ārsti';
 const EXAMPLE_LABEL = 'Piemērs: fleboloģija';
+const TRUST_CHECK_TITLE = 'Bezmaksas Personal AI Trust Check ārstam';
+const TRUST_CHECK_TAT = '1 darba dienā';
+const TRUST_CHECK_BADGE = 'BEZ MAKSAS';
+
+const TRUST_CHECK_BENEFITS = [
+  'Pārbaude 5 tipiskos pacienta jautājumos',
+  '“Fallback mode” iemesli: kāpēc AI izvēlas citus',
+  'Top-5 signāli + 30 dienu rīcības plāns',
+];
 
 
 const preGeneratedQueries: string[] = [
@@ -980,18 +989,19 @@ export default function Home() {
     onClick={() => document.getElementById('trust-check')?.scrollIntoView({ behavior: 'smooth' })}
     className="w-full sm:w-auto px-8 py-5 text-xl font-bold"
   >
-    Saņemt Personal AI Trust Check BEZ MAKSAS (1 darba dienas laikā)
-    <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+    Saņemt Trust Check {TRUST_CHECK_BADGE} ({TRUST_CHECK_TAT}) <ArrowRight className="group-hover:translate-x-1 transition-transform" />
   </GlassButton>
 
   <button
     type="button"
     onClick={() => document.getElementById('ai-checker')?.scrollIntoView({ behavior: 'smooth' })}
-    className="w-full sm:w-auto rounded-2xl px-8 py-5 font-bold text-xl text-slate-900
-      border border-white/20 bg-white/20 backdrop-blur-xl
-      hover:bg-white/30 transition shadow-md"
+    className={cx(
+      'w-full sm:w-auto rounded-2xl px-8 py-5 font-bold text-xl text-slate-900',
+      'border border-white/20 bg-white/20 backdrop-blur-xl',
+      'hover:bg-white/30 transition shadow-md'
+    )}
   >
-    10 sekunžu tests ar reālu AI atbildi pacientam
+    10 sekunžu tests ar reālu AI atbildi →
   </button>
 </div>
 
@@ -1014,6 +1024,7 @@ export default function Home() {
   </button>
 </div>
 
+
             <p className="text-sm text-slate-700 mt-4">
               Šī ir pārbaude un atskaite, nevis reklāma vai “pārdošanas zvans”. Mēs parādām realitāti - lēmumu pieņemat jūs.
             </p>
@@ -1032,8 +1043,11 @@ export default function Home() {
       <section id="trust-check" className="py-20 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-10">
-            <h2 className="text-4xl font-bold mb-3">Personal AI Trust Check ārstam - bez maksas</h2>
-            <p className="text-slate-700">Iedodiet profila saiti (klīnika/katalogs/Linkedin/Facebook..) un e-pastu — atsūtām pārbaudi 1 darba dienas laikā.</p>
+            <h2 className="text-4xl font-bold mb-3">{TRUST_CHECK_TITLE} — {TRUST_CHECK_BADGE}</h2>
+<p className="text-slate-700">
+  Iedodiet profila saiti (klīnika/katalogs/LinkedIn/Facebook..) un e-pastu — atsūtām pārbaudi {TRUST_CHECK_TAT}.
+</p>
+
           </div>
 
           <GlassCard className="p-8">
@@ -1141,9 +1155,10 @@ export default function Home() {
                     required
                   />
 
-                  <GlassButton type="submit" disabled={leadSubmitting} className="w-full">
-                    {leadSubmitting ? 'Nosūta...' : 'Saņemt Personal AI Trust Check'}
-                  </GlassButton>
+<GlassButton type="submit" disabled={leadSubmitting} className="w-full">
+  {leadSubmitting ? 'Nosūta...' : `Saņemt Trust Check ${TRUST_CHECK_BADGE} (${TRUST_CHECK_TAT})`}
+</GlassButton>
+
 
                   <div className="text-xs text-slate-700 leading-relaxed">
                     Nosūtot, jūs piekrītat, ka saņemsiet rezultātus uz norādīto e-pastu. Bez spama. Varat atteikties jebkurā brīdī.
@@ -1852,12 +1867,43 @@ export default function Home() {
         </div>
       </GlassCard>
 
+<GlassCard className="p-6 border-indigo-200/60">
+  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+    <div className="min-w-0">
+      <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/20 px-3 py-1 text-xs font-extrabold text-slate-900 ring-1 ring-white/10">
+        <span className="h-2 w-2 rounded-full bg-emerald-500" />
+        {TRUST_CHECK_BADGE} • {TRUST_CHECK_TAT}
+      </div>
+
+      <div className="mt-2 text-xl font-extrabold text-slate-900 leading-snug">
+        Gribi saprast <span className="underline underline-offset-4">kāpēc</span> AI tevi nemin — un ko tieši salabot?
+      </div>
+
+      <div className="mt-3 grid sm:grid-cols-2 gap-2 text-sm text-slate-800">
+        {TRUST_CHECK_BENEFITS.map((t, i) => (
+          <div key={i} className="flex items-start gap-2">
+            <CheckCircle2 className="w-5 h-5 text-emerald-700 flex-shrink-0 mt-0.5" />
+            <span>{t}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div className="shrink-0 w-full md:w-[320px]">
       <GlassButton
         onClick={() => document.getElementById('trust-check')?.scrollIntoView({ behavior: 'smooth' })}
-        className="w-full bg-gradient-to-b from-purple-500/95 via-purple-600/95 to-indigo-700/95 shadow-[0_10px_30px_rgba(124,58,237,0.22)]"
+        className="w-full bg-gradient-to-b from-emerald-500/95 via-emerald-600/95 to-teal-700/95 shadow-[0_18px_60px_rgba(16,185,129,0.28)]"
       >
-        Saņemt Personal AI Trust Check → (1 darba dienā)
+        Saņemt Trust Check {TRUST_CHECK_BADGE} →
       </GlassButton>
+
+      <div className="mt-2 text-xs text-slate-600 text-center">
+        Atsūtām e-pastā {TRUST_CHECK_TAT}. Bez spama.
+      </div>
+    </div>
+  </div>
+</GlassCard>
+
 
       <p className="text-xs text-slate-700">Piezīme: AI atbildes var atšķirties atkarībā no jautājuma formulējuma un modeļa.</p>
     </div>
