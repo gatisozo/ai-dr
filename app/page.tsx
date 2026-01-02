@@ -974,7 +974,9 @@ export default function Home() {
             <div className="space-y-3 mb-8 text-left max-w-xl mx-auto">
               {[
                 'Pārbaude 5 tipiskos pacienta jautājumos',
-                '“Fallback mode”, jeb AI "stāsta muļķības" -kāpēc tā un iemesli: kāpēc AI izvēlas citus ārstus',
+                '“Fallback mode”, jeb AI "stāsta muļķības" -kāpēc tā un iemesli: kāpēc AI izvēlas citus ārstus vai izdomā muļķības',
+                '“Pirmā mēneša plāns kā rīkoties Jums',
+                '“Kāpēc tas ir jādara tagad nevis jāatliek uz "Kaut kad"',
                 
               ].map((t, i) => (
                 <div key={i} className="flex items-center gap-3">
