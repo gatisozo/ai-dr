@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Zap, Search, CheckCircle2, AlertCircle, ChevronDown, FileText, X } from 'lucide-react';
 import AIVisibilityCards from './components/AIVisibilityCards';
-import AICostComparison from './components/AICostComparison';
+
 
 // ==========================================
 // FOKUSS: ārsti + fiksēta specialitāte (1. iterācija)
@@ -968,24 +968,26 @@ const faqs: Array<{ q: string; a: React.ReactNode }> = [
           <div className="pointer-events-auto shrink-0 text-xs font-semibold text-slate-900 sm:text-sm">Fast lane:</div>
 
           <div className="pointer-events-auto flex min-w-0 flex-1 items-center gap-2 overflow-x-auto whitespace-nowrap [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {[
-              { href: '#trust-check', label: 'Personal Trust Check' },
-              { href: '#ai-checker', label: 'AI tests (10 sek.)' },
-              { href: '#cost', label: 'Izmaksas' },
-              { href: '#faq', label: 'FAQ' },
-            ].map((it) => (
-              <a
-                key={it.href}
-                href={it.href}
-                className={cx(
-                  'shrink-0 rounded-2xl px-3 py-2 text-xs font-semibold text-slate-900',
-                  'border border-white/20 bg-white/20 backdrop-blur-xl ring-1 ring-white/10',
-                  'hover:bg-white/30 transition'
-                )}
-              >
-                {it.label}
-              </a>
-            ))}
+{[
+  { href: '#trust-check', label: 'Personal Trust Check' },
+  { href: '#mini-check', label: 'Mini-check (5–10 sek.)' },
+  { href: '#ai-checker', label: 'AI tests (10 sek.)' },
+  { href: '#pricing', label: 'Cena (Month 1 Sprint)' },
+  { href: '#faq', label: 'FAQ' },
+].map((it) => (
+  <a
+    key={it.href}
+    href={it.href}
+    className={cx(
+      'shrink-0 rounded-2xl px-3 py-2 text-xs font-semibold text-slate-900',
+      'border border-white/20 bg-white/20 backdrop-blur-xl ring-1 ring-white/10',
+      'hover:bg-white/30 transition'
+    )}
+  >
+    {it.label}
+  </a>
+))}
+
           </div>
 
           <button
@@ -1582,12 +1584,82 @@ const faqs: Array<{ q: string; a: React.ReactNode }> = [
         </div>
       </section>
 
-      {/* COST */}
-      <section className="py-16 px-4" id="cost">
-        <div className="max-w-6xl mx-auto">
-          <AICostComparison />
+{/* PRICING */}
+<section id="pricing" className="py-20 px-4">
+  <div className="max-w-4xl mx-auto">
+    <GlassCard className="p-8 border-indigo-200/60">
+      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+        <div className="min-w-0">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/20 px-3 py-1 text-xs font-extrabold text-slate-900 ring-1 ring-white/10">
+            <span className="h-2 w-2 rounded-full bg-indigo-500" />
+            Cena
+          </div>
+
+          <h2 className="mt-3 text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight">
+            Month 1 Sprint <span className="text-slate-700 font-extrabold">no €690</span>
+          </h2>
+
+          <p className="mt-3 text-slate-700 leading-relaxed">
+            Cenu runājam <span className="font-semibold">pēc “proof”</span> (AI tests / mini-check), jo līdz tam tas ir tikai “tukšs cipars”.
+            Ja AI nemin — tad ir jēga runāt par ieviešanu.
+          </p>
+
+          <div className="mt-5 grid gap-2 text-sm text-slate-800">
+            <div className="flex items-start gap-2">
+              <CheckCircle2 className="w-5 h-5 text-emerald-700 flex-shrink-0 mt-0.5" />
+              <span>
+                Ieviešana (nevis konsultācija): profils + 8–12 FAQ + schema + profilu saskaņošana 2–3 avotos.
+              </span>
+            </div>
+            <div className="flex items-start gap-2">
+              <CheckCircle2 className="w-5 h-5 text-emerald-700 flex-shrink-0 mt-0.5" />
+              <span>
+                Tipiski: <span className="font-semibold">€690–€1,290</span> (atkarīgs, cik daudz jāuztaisa “no nulles”).
+              </span>
+            </div>
+            <div className="flex items-start gap-2">
+              <CheckCircle2 className="w-5 h-5 text-emerald-700 flex-shrink-0 mt-0.5" />
+              <span>Atkārtots tests tajos pašos jautājumos pēc 30 dienām.</span>
+            </div>
+          </div>
+
+          <div className="mt-6 rounded-2xl border border-amber-200/60 bg-amber-50/40 p-4">
+            <div className="font-semibold text-amber-900">Kāpēc “ja nesāksi tagad” kļūs grūtāk?</div>
+            <div className="mt-1 text-sm text-amber-900/90">
+              Konkurenti uzkrāj publiski citējamus signālus (konsekventi profili + FAQ + avoti). Atstarpe pieaug nevis kompetences, bet AI redzamības dēļ.
+            </div>
+          </div>
         </div>
-      </section>
+
+        <div className="shrink-0 w-full md:w-[320px]">
+          <GlassButton
+            onClick={() => document.getElementById('trust-check')?.scrollIntoView({ behavior: 'smooth' })}
+            className="w-full bg-gradient-to-b from-emerald-500/95 via-emerald-600/95 to-teal-700/95 shadow-[0_18px_60px_rgba(16,185,129,0.28)]"
+          >
+            Saņemt Trust Check {TRUST_CHECK_BADGE} →
+          </GlassButton>
+
+          <button
+            type="button"
+            onClick={() => document.getElementById('ai-checker')?.scrollIntoView({ behavior: 'smooth' })}
+            className={cx(
+              'mt-3 w-full rounded-2xl px-6 py-4 font-semibold text-slate-900',
+              'border border-white/20 bg-white/20 backdrop-blur-xl',
+              'hover:bg-white/30 transition shadow-md'
+            )}
+          >
+            Vispirms “proof” (AI tests) →
+          </button>
+
+          <div className="mt-3 text-xs text-slate-600 text-center">
+            Cenu precizējam pēc situācijas, nevis “uzminam”.
+          </div>
+        </div>
+      </div>
+    </GlassCard>
+  </div>
+</section>
+
 
       {/* AI TEST */}
       <section id="ai-checker" className="py-20 px-4">
