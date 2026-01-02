@@ -917,7 +917,7 @@ export default function Home() {
           <h1 className="mt-6 text-5xl md:text-7xl font-bold mb-8 leading-tight tracking-tight">
             Pacienti arvien biežāk
             <br />
-            nevis meklē — bet
+            nevis meklē Google - bet
             <br />
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600">
               prasa AI, pie kura ārsta pierakstīties.
@@ -931,7 +931,7 @@ export default function Home() {
 
           <GlassCard className="p-6 mb-6 max-w-2xl mx-auto">
             <div className="rounded-2xl border border-white/25 bg-white/25 backdrop-blur-xl px-6 py-5">
-              <p className="text-2xl font-medium text-slate-900 italic">"Kur Rīgā pieņem augsti kvalificēts flebologs?"</p>
+              <p className="text-2xl font-medium text-slate-900 italic">"Kur Rīgā iesaki iet pie labu vēnu ārsta?"</p>
             </div>
           </GlassCard>
 
@@ -939,7 +939,7 @@ export default function Home() {
             <div className="rounded-2xl border border-red-200/50 bg-red-50/40 backdrop-blur-xl px-6 py-5">
               <p className="text-xl md:text-2xl font-bold text-red-800">Ja AI jūs nemin — pacients bieži aiziet pie citiem.</p>
               <p className="mt-2 text-sm text-red-900/80">
-                Tas bieži nav par kvalitāti. Tas ir par to, vai AI spēj jūsu kompetenci droši “pierādīt” publiskā informācijā.
+                Tas bieži nav par kvalitāti. Tas ir par to, vai AI spēj jūsu kompetenci droši “pierādīt”, balstoties uz publiski nolasāmu un objektīvu informāciju.
               </p>
             </div>
           </GlassCard>
@@ -948,19 +948,19 @@ export default function Home() {
   <h2 className="text-2xl font-bold mb-2">Bezmaksas Personal AI Trust Check 1 darba dienas laikā</h2>
 
   <p className="text-slate-700 mb-2">
-    Pārbaudām: vai AI spēj droši nosaukt jūs pacienta jautājumos (un kas traucē, ja nespēj).
+    Pārbaudām: vai AI spēj droši nosaukt jūs tipiskos pacienta jautājumos (un kas traucē, ja nespēj).
   </p>
 
   <p className="text-sm text-slate-600 mb-6">
-    Sāc ar 10 sek. reālo AI testu zemāk — ja redzi, ka AI tevi nemin, tad uztaisām pilno Trust Check ar iemesliem un rīcības plānu.
+    Sāciet ar 10 sek. reālo AI testu zemāk — ja redzi, ka AI tevi nemin, tad uztaisīsim pilno Trust Check ar iemesliem un rīcības plānu.
   </p>
 
             {/* ✅ Saīsināts (noņemam dublēšanos) */}
             <div className="space-y-3 mb-8 text-left max-w-xl mx-auto">
               {[
-                'Pārbaude 5 tipiskos pacienta jautājumos',
-                '“Fallback mode” iemesli: kāpēc AI izvēlas citus',
-                '1 mēneša rīcības plāns (ko publicēt un kur)',
+                'Pārbaude 15 tipiskos pacienta jautājumos',
+                '“Fallback mode”, jeb AI "stāsta muļķības" -kāpēc tā un iemesli: kāpēc AI izvēlas citus ārstus',
+                
               ].map((t, i) => (
                 <div key={i} className="flex items-center gap-3">
                   <CheckCircle2 className="w-6 h-6 text-emerald-600 flex-shrink-0" />
@@ -974,7 +974,7 @@ export default function Home() {
     onClick={() => document.getElementById('trust-check')?.scrollIntoView({ behavior: 'smooth' })}
     className="w-full sm:w-auto px-8 py-5 text-xl font-bold"
   >
-    Saņemt Personal AI Trust Check (1 darba dienā)
+    Saņemt Personal AI Trust Check (1 darba dienas laikā)
     <ArrowRight className="group-hover:translate-x-1 transition-transform" />
   </GlassButton>
 
@@ -985,7 +985,7 @@ export default function Home() {
       border border-white/20 bg-white/20 backdrop-blur-xl
       hover:bg-white/30 transition shadow-md"
   >
-    Testēt 10 sek. ar reālu AI
+    10 sekunžu tests ar reālu AI atbildi pacientam
   </button>
 </div>
 
@@ -1004,12 +1004,12 @@ export default function Home() {
     onClick={() => setDemoOpen(true)}
     className="font-semibold text-slate-900 underline underline-offset-4 hover:opacity-80"
   >
-    Noskatīties 30 sek. demo
+    Noskatīties 20 sek. demo
   </button>
 </div>
 
             <p className="text-sm text-slate-700 mt-4">
-              Šī ir pārbaude un atskaite, nevis reklāma vai “pārdošanas zvans”. Mēs parādām datus — lēmumu pieņemat jūs.
+              Šī ir pārbaude un atskaite, nevis reklāma vai “pārdošanas zvans”. Mēs parādām realitāti - lēmumu pieņemat jūs.
             </p>
           </GlassCard>
         </div>
@@ -1026,8 +1026,8 @@ export default function Home() {
       <section id="trust-check" className="py-20 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-10">
-            <h2 className="text-4xl font-bold mb-3">Personal AI Trust Check (ārstam) — bez maksas</h2>
-            <p className="text-slate-700">Iedodiet profila saiti (klīnika/katalogs) un e-pastu — atsūtām pārbaudi 1 darba dienas laikā.</p>
+            <h2 className="text-4xl font-bold mb-3">Personal AI Trust Check ārstam - bez maksas</h2>
+            <p className="text-slate-700">Iedodiet profila saiti (klīnika/katalogs/Linkedin/Facebook..) un e-pastu — atsūtām pārbaudi 1 darba dienas laikā.</p>
           </div>
 
           <GlassCard className="p-8">
@@ -1038,15 +1038,15 @@ export default function Home() {
                   <div className="text-sm font-semibold text-slate-900 mb-3">Kā notiek (3 soļi):</div>
                   <ol className="space-y-2 text-sm text-slate-800 list-decimal pl-5">
                     <li>Iedodat profila lapu + vārdu.</li>
-                    <li>Pārbaudām 5 tipiskus pacienta jautājumus + “fallback mode” iemeslus.</li>
-                    <li>Atsūtām atskaiti ar top-5 signāliem + 1 mēneša plānu.</li>
+                    <li>Pārbaudām 15 tipiskus pacienta jautājumus + AI “fallback mode” iemeslus.</li>
+                    <li>Atsūtām atskaiti ar top-5 signāliem + 1 mēneša plānu kā rīkoties.</li>
                   </ol>
                 </div>
 
                 <div className="rounded-2xl border border-blue-200/40 bg-blue-50/40 backdrop-blur-xl p-4">
                   <div className="font-semibold text-slate-900">Svarīgi:</div>
                   <p className="text-sm text-slate-800 mt-1">
-                    Mēs nepārņemam kontroli pār jūsu reputāciju. Mēs parādām, ko AI šobrīd spēj droši pateikt, un ko vajag sakārtot, lai tas mainītos.
+                    Mēs nepārņemam kontroli pār jūsu reputāciju. Mēs parādām, ko AI šobrīd spēj droši pateikt, un ko vajag sakārtot, lai tas mainītos atbilstoši realitātei.
                   </p>
                 </div>
 
@@ -1056,7 +1056,7 @@ export default function Home() {
                   <ul className="mt-2 list-disc pl-5 text-sm text-amber-900/90 space-y-1">
                     <li>neliekam fake atsauksmes vai “labākais ārsts” apgalvojumus,</li>
                     <li>nepērkam reitingus un “katalogu vietas”,</li>
-                    <li>nepārtaisām jūs par “mārketinga personu” — sakārtojam pierādāmus signālus.</li>
+                    <li>nepārtaisām jūs par “mārketinga personu”, bet sakārtojam pierādāmus signālus, kurus AI ņems vērā.</li>
                   </ul>
                 </div>
 
@@ -1065,7 +1065,6 @@ export default function Home() {
                   <div className="mt-1 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/25 px-3 py-1 text-sm font-bold">
                     {SPECIALTY_LABEL}
                   </div>
-                  <div className="mt-2 text-xs text-slate-600">Pirmā iterācija: tikai fleboloģija (lai flow ir ass un salabots līdz galam).</div>
 
                   <div className="mt-4 flex flex-col sm:flex-row gap-2">
                     <button
@@ -1170,8 +1169,8 @@ export default function Home() {
 
                 {/* ✅ NEW: Mikro-enkurs pret “aiziešu paspēlēties un pazudīšu” */}
                 <div className="mt-4 rounded-2xl border border-white/20 bg-white/12 backdrop-blur-xl p-4 text-sm text-slate-800">
-                  <span className="font-semibold">Padoms:</span> ja AI nemin jūsu vārdu, tas bieži nozīmē, ka publiskie signāli nav pietiekami citējami.
-                  Trust Check parāda <span className="font-semibold">konkrēti</span> ko salikt, lai tas mainītos.
+                  <span className="font-semibold">Padoms:</span> ja AI nemin jūsu vārdu, tas bieži nozīmē, ka publiskie signāli nav uzticami un pietiekami citējami.
+                  Trust Check parāda <span className="font-semibold">konkrēti</span> ko sakārtot, lai tas mainītos.
                 </div>
               </div>
             </div>
@@ -1185,8 +1184,8 @@ export default function Home() {
           <GlassCard className="p-8 border-blue-200/50">
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
               <div className="flex-1">
-                <h2 className="text-3xl md:text-4xl font-bold mb-2">Ātra AI-lasāmības pārbaude (10–15 sekundēs)</h2>
-                <p className="text-slate-700">Ievadiet mājaslapu un uzreiz redziet signālus, kas AI traucē nolasīt saturu.</p>
+                <h2 className="text-3xl md:text-4xl font-bold mb-2">Ātra AI-lasāmības pārbaude (5–10 sekundēs)</h2>
+                <p className="text-slate-700">Ievadiet mājaslapas adresi un uzreiz redziet signālus, kas AI traucē nolasīt saturu.</p>
               </div>
 
               <div className="md:w-[420px]">
@@ -1919,7 +1918,7 @@ export default function Home() {
             <GlassCard className="p-6 md:p-8">
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <div className="text-xs text-slate-600 mb-1">30 sek. DEMO (ārsts • fleboloģija)</div>
+                  <div className="text-xs text-slate-600 mb-1">30 sek. DEMO (ārsts • piemēram, fleboloģija)</div>
                   <h3 className="text-xl md:text-2xl font-bold text-slate-900">{demoScreens[demoStep].title}</h3>
                 </div>
                 <button
@@ -2005,7 +2004,7 @@ export default function Home() {
 
               <div className="mt-5 space-y-4">
                 <div className="rounded-2xl border border-white/20 bg-white/12 backdrop-blur-xl p-4">
-                  <div className="text-sm font-semibold text-slate-900">1) Pieminējums pacienta jautājumos (5 tests)</div>
+                  <div className="text-sm font-semibold text-slate-900">1) Ārsta redzamība pacienta jautājumos</div>
                   <div className="mt-2 grid sm:grid-cols-2 gap-3 text-sm">
                     {[
                       { q: '“Kurš flebologs Rīgā ir uzticams?”', r: 'Nav minēts', tone: 'bad' as const },
@@ -2032,20 +2031,20 @@ export default function Home() {
                 <div className="rounded-2xl border border-amber-200/60 bg-amber-50/40 p-4">
                   <div className="text-sm font-semibold text-amber-900">2) “Fallback mode” iemesli (kāpēc AI izvēlas citus)</div>
                   <ul className="mt-2 list-disc pl-5 text-sm text-amber-900/90 space-y-1">
-                    <li>Nav skaidras “procedūru kartes” (ko tieši darāt fleboloģijā).</li>
+                    <li>Nav skaidras specializācija (ko tieši darāt fleboloģijā).</li>
                     <li>Profila informācija atšķiras dažādos avotos (vārds/atslēgvārdi/pakalpojumi).</li>
-                    <li>Trūkst citējamu pierādījumu (sertifikācija, pieredzes bloki, avoti).</li>
+                    <li>Trūkst citējamu pierādījumu (sertifikācija, pieredzes bloki, avoti, rezultāti).</li>
                   </ul>
                 </div>
 
                 <div className="rounded-2xl border border-emerald-200/60 bg-emerald-50/40 p-4">
                   <div className="text-sm font-semibold text-emerald-900">3) Top-5 signāli, kas jāpieliek (lai AI var jūs droši minēt)</div>
                   <ol className="mt-2 list-decimal pl-5 text-sm text-emerald-900/90 space-y-1">
-                    <li>1 “ārsta lapa” ar skaidru specializāciju + metodēm + indikācijām.</li>
-                    <li>FAQ: 8–12 jautājumi (ko pacients jautā), strukturēti un citējami.</li>
+                    <li>Pirmkārt “ārsta lapa” ar skaidru specializāciju + metodēm + indikācijām.</li>
+                    <li>FAQ: Biežākie jautājumi (ko pacients jautā), strukturēti un citējami.</li>
                     <li>Konsekvents profils 3 vietās (klīnika + katalogs + LinkedIn/FB).</li>
                     <li>Pieredzes/sertifikātu bloks (bez reklāmas valodas, tikai fakti).</li>
-                    <li>Strukturētie dati (schema) + nolasāms saturs (ne tikai JS).</li>
+                    <li>Strukturētie dati (schema) + nolasāms saturs AI izpratnē.</li>
                   </ol>
                 </div>
 
@@ -2087,7 +2086,7 @@ export default function Home() {
                 </div>
 
                 <p className="text-xs text-slate-600">
-                  * Paraugs ir demonstrācijai. Reālajā atskaitē ir jūsu profila pierādījumi, konkrēti avoti un rīcības soļi.
+                  * Paraugs ir demonstrācijai. Reālajā atskaitē būs Jūsu profila pierādījumi, konkrēti avoti un rīcības soļi.
                 </p>
               </div>
             </GlassCard>
