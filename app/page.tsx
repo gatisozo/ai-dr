@@ -15,10 +15,17 @@ import AIVisibilityCards from './components/AIVisibilityCards';
 import AICostComparison from './components/AICostComparison';
 
 // ==========================================
-// FOKUSS: tikai fleboloģija (ārsti)
+// FOKUSS: ārsti
+// ==========================================
+// ==========================================
+// FOKUSS: ārsti + fiksēta specialitāte (1. iterācija)
 // ==========================================
 const SPECIALTY_VALUE = 'fleboloģija';
 const SPECIALTY_LABEL = 'Fleboloģija';
+
+const PRODUCT_LABEL = 'Ārsti';
+const EXAMPLE_LABEL = 'Piemērs: fleboloģija';
+
 
 const preGeneratedQueries: string[] = [
   'Kurš vēnu ārsts Rīgā ir uzticams un kvalificēts?',
@@ -383,7 +390,8 @@ export default function Home() {
     track('mini_check_submit', { url: normalizeUrlLoosely(miniUrl) });
 
     if (!miniUrl.trim()) {
-      setMiniError('Lūdzu ievadiet mājaslapas adresi');
+      setMiniError('Lūdzu ievadiet profila vai klīnikas lapas adresi');
+
       return;
     }
 
@@ -861,28 +869,27 @@ export default function Home() {
 
           <div className="pointer-events-auto shrink-0 text-xs font-semibold text-slate-900 sm:text-sm">Fast lane:</div>
 
-          <div className="pointer-events-auto flex min-w-0 flex-1 items-center gap-2 overflow-x-auto whitespace-nowrap [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {[
-  { href: '#ai-checker', label: 'AI tests (10 sek.)' },
-  { href: '#trust-check', label: 'Personal Trust Check' },
-  { href: '#mini-check', label: 'Mini-check' },
-  { href: '#cost', label: 'Izmaksas' },
-  { href: '#faq', label: 'FAQ' },
-]
-.map((it) => (
-              <a
-                key={it.href}
-                href={it.href}
-                className={cx(
-                  'shrink-0 rounded-2xl px-3 py-2 text-xs font-semibold text-slate-900',
-                  'border border-white/20 bg-white/20 backdrop-blur-xl ring-1 ring-white/10',
-                  'hover:bg-white/30 transition'
-                )}
-              >
-                {it.label}
-              </a>
-            ))}
-          </div>
+<div className="pointer-events-auto flex min-w-0 flex-1 items-center gap-2 overflow-x-auto whitespace-nowrap [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+  {[
+    { href: '#trust-check', label: 'Personal Trust Check' },
+    { href: '#ai-checker', label: 'AI tests (10 sek.)' },
+    { href: '#cost', label: 'Izmaksas' },
+    { href: '#faq', label: 'FAQ' },
+  ].map((it) => (
+    <a
+      key={it.href}
+      href={it.href}
+      className={cx(
+        'shrink-0 rounded-2xl px-3 py-2 text-xs font-semibold text-slate-900',
+        'border border-white/20 bg-white/20 backdrop-blur-xl ring-1 ring-white/10',
+        'hover:bg-white/30 transition'
+      )}
+    >
+      {it.label}
+    </a>
+  ))}
+</div>
+
 
           <button
   type="button"
@@ -904,7 +911,7 @@ export default function Home() {
       <section className="relative py-20 px-4">
         <div className="max-w-5xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/25 px-4 py-2 text-sm font-semibold text-slate-900 ring-1 ring-white/10">
-            Fokusā: <span className="font-extrabold">{SPECIALTY_LABEL}</span> • ārsti
+            Fokusā: <span className="font-extrabold">{PRODUCT_LABEL}</span> • {EXAMPLE_LABEL}
           </div>
 
           <h1 className="mt-6 text-5xl md:text-7xl font-bold mb-8 leading-tight tracking-tight">
@@ -913,7 +920,7 @@ export default function Home() {
             nevis meklē — bet
             <br />
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600">
-              prasa AI, pie kura flebologa pierakstīties.
+              prasa AI, pie kura ārsta pierakstīties.
             </span>
           </h1>
 
@@ -963,49 +970,43 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <GlassButton
-  onClick={() => document.getElementById('ai-checker')?.scrollIntoView({ behavior: 'smooth' })}
-  className="w-full sm:w-auto px-8 py-5 text-xl font-bold"
->
-  Testēt ar reālu AI (10 sek.)
-  <ArrowRight className="group-hover:translate-x-1 transition-transform" />
-</GlassButton>
-
-
-              <button
-                type="button"
-                onClick={() => setDemoOpen(true)}
-                className="rounded-2xl px-8 py-5 font-bold text-xl text-slate-900
-               border border-white/20 bg-white/20 backdrop-blur-xl
-               hover:bg-white/30 transition shadow-md"
-              >
-                30 sek. demo (bez datu ievades)
-              </button>
-<div className="mt-4 text-sm text-slate-700">
-  Nepietiek ar 10 sek. testu?{' '}
-  <button
-    type="button"
+  <GlassButton
     onClick={() => document.getElementById('trust-check')?.scrollIntoView({ behavior: 'smooth' })}
-    className="font-semibold text-slate-900 underline underline-offset-4 hover:opacity-80"
+    className="w-full sm:w-auto px-8 py-5 text-xl font-bold"
   >
     Saņemt Personal AI Trust Check (1 darba dienā)
+    <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+  </GlassButton>
+
+  <button
+    type="button"
+    onClick={() => document.getElementById('ai-checker')?.scrollIntoView({ behavior: 'smooth' })}
+    className="w-full sm:w-auto rounded-2xl px-8 py-5 font-bold text-xl text-slate-900
+      border border-white/20 bg-white/20 backdrop-blur-xl
+      hover:bg-white/30 transition shadow-md"
+  >
+    Testēt 10 sek. ar reālu AI
   </button>
 </div>
 
-              {/* ✅ NEW: Paraugs */}
-              <button
-                type="button"
-                onClick={() => setSampleOpen(true)}
-                className="rounded-2xl px-8 py-5 font-bold text-xl text-slate-900
-               border border-white/20 bg-white/20 backdrop-blur-xl
-               hover:bg-white/30 transition shadow-md"
-              >
-                <span className="inline-flex items-center justify-center gap-2">
-                  <FileText className="w-5 h-5" />
-                  Parauga atskaite
-                </span>
-              </button>
-            </div>
+<div className="mt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-slate-700">
+  <button
+    type="button"
+    onClick={() => setSampleOpen(true)}
+    className="font-semibold text-slate-900 underline underline-offset-4 hover:opacity-80 inline-flex items-center gap-2"
+  >
+    <FileText className="w-4 h-4" />
+    Skatīt parauga atskaiti
+  </button>
+
+  <button
+    type="button"
+    onClick={() => setDemoOpen(true)}
+    className="font-semibold text-slate-900 underline underline-offset-4 hover:opacity-80"
+  >
+    Noskatīties 30 sek. demo
+  </button>
+</div>
 
             <p className="text-sm text-slate-700 mt-4">
               Šī ir pārbaude un atskaite, nevis reklāma vai “pārdošanas zvans”. Mēs parādām datus — lēmumu pieņemat jūs.
@@ -1026,7 +1027,7 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-10">
             <h2 className="text-4xl font-bold mb-3">Personal AI Trust Check (ārstam) — bez maksas</h2>
-            <p className="text-slate-700">Fokusā: fleboloģija. Iedodiet profila lapu un vārdu — atsūtām pārbaudi uz e-pastu 1 darba dienā.</p>
+            <p className="text-slate-700">Iedodiet profila saiti (klīnika/katalogs) un e-pastu — atsūtām pārbaudi 1 darba dienas laikā.</p>
           </div>
 
           <GlassCard className="p-8">
@@ -1189,7 +1190,8 @@ export default function Home() {
               </div>
 
               <div className="md:w-[420px]">
-                <label className="block text-sm font-medium mb-2 text-slate-800">Mājaslapa (URL)</label>
+                <label className="block text-sm font-medium mb-2 text-slate-800">Profila saite vai klīnikas lapa (URL)</label>
+
 
                 <form
                   className="flex gap-2"
@@ -1203,7 +1205,8 @@ export default function Home() {
                     inputMode="url"
                     value={miniUrl}
                     onChange={(e) => setMiniUrl(e.target.value)}
-                    placeholder="klinika.lv"
+                    placeholder="klinika.lv/arsti/... vai katalogs.lv/..."
+
                     className={cx('flex-1', inputBase)}
                   />
                   <GlassButton type="submit" disabled={miniLoading || !miniUrl.trim()} className="px-5 py-3">
