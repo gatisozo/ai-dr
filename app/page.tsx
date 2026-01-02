@@ -1554,9 +1554,10 @@ export default function Home() {
         </div>
 
         <div className="flex items-center justify-between mb-3 text-sm text-slate-700">
-          <span>
-            Neziniet, ko rakstīt?</Spiediet> <span className="font-semibold">🎲</span> — ieliksim tipisku pacienta jautājumu.
-          </span>
+<span>
+  Nezināt, ko rakstīt? Spiediet <span className="font-semibold">🎲</span> — ieliksim tipisku pacienta jautājumu.
+</span>
+
 
           <button
             type="button"
