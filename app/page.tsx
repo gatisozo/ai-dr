@@ -1500,7 +1500,7 @@ export default function Home() {
       <section id="ai-checker" className="py-20 px-4">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-4xl font-bold text-center mb-3">Pārbaudiet paši: ko AI iesaka fleboloģijā</h2>
-          <p className="text-center text-slate-700 mb-10">Reāla atbilde no ChatGPT un Claude. (Pirmā iterācija: tikai fleboloģija.)</p>
+          <p className="text-center text-slate-700 mb-10">Reāla atbilde no ChatGPT un Claude. (Piemērs fleboloģijai.)</p>
 
           <GlassCard
   className={cx(
@@ -1521,7 +1521,7 @@ export default function Home() {
       <div className="min-w-0">
         <div className="text-xs font-semibold tracking-wide text-slate-700">REĀLAIS AI TESTS • ChatGPT + Claude</div>
         <div className="text-lg font-extrabold text-slate-900 leading-snug">
-          10 sekundes, lai redzētu — ko AI iesaka fleboloģijā
+          10 sekundes, lai redzētu — ko AI iesaka
         </div>
         <div className="text-sm text-slate-700 mt-1">
           {showResults ? 'Rezultāti ir zemāk šajā blokā.' : 'Ievadi jautājumu un nospied Enter.'}
@@ -1550,12 +1550,12 @@ export default function Home() {
         {/* ✅ Virsraksts virs tipiskā jautājuma */}
         <div className="mb-3">
           <div className="text-xs font-semibold tracking-wide text-slate-700">Tipisks pacienta jautājums AI:</div>
-          <div className="text-sm text-slate-600 mt-0.5">Spied 🎲 — ieliksim vienu no tipiskajiem jautājumiem.</div>
+          <div className="text-sm text-slate-600 mt-0.5">Spiediet 🎲 — ieliksim vienu no tipiskajiem jautājumiem.</div>
         </div>
 
         <div className="flex items-center justify-between mb-3 text-sm text-slate-700">
           <span>
-            Nezini, ko rakstīt? Spied <span className="font-semibold">🎲</span> — ieliksim tipisku pacienta jautājumu.
+            Neziniet, ko rakstīt?</Spiediet> <span className="font-semibold">🎲</span> — ieliksim tipisku pacienta jautājumu.
           </span>
 
           <button
@@ -1582,7 +1582,7 @@ export default function Home() {
           type="text"
           value={queryInput}
           onChange={(e) => setQueryInput(e.target.value)}
-          placeholder="Kur Rīgā pieņem augsti kvalificēts flebologs?"
+          placeholder="Kur Rīgā pieņem labs vēnu ārsts?"
           className={inputBase}
         />
       </div>
@@ -1602,7 +1602,7 @@ export default function Home() {
           className={inputBase}
         />
         <div className="mt-2 text-xs text-slate-600">
-          * AI ne vienmēr min ārstu vārdus. Ja vārds nav minēts, tas bieži nozīmē, ka publiskie signāli par praksi nav pietiekami citējami.
+          * AI ne vienmēr min ārstu vārdus. Ja vārds nav minēts, tas bieži nozīmē, ka publiskie signāli par praksi nav pietiekami citējami un uzticami no AI viedokļa.
         </div>
       </div>
     </div>
