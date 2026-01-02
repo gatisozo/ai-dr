@@ -863,12 +863,13 @@ export default function Home() {
 
           <div className="pointer-events-auto flex min-w-0 flex-1 items-center gap-2 overflow-x-auto whitespace-nowrap [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {[
-              { href: '#trust-check', label: 'Personal Trust Check' },
-              { href: '#mini-check', label: 'Mini-check' },
-              { href: '#ai-checker', label: 'AI tests' },
-              { href: '#cost', label: 'Izmaksas' },
-              { href: '#faq', label: 'FAQ' },
-            ].map((it) => (
+  { href: '#ai-checker', label: 'AI tests (10 sek.)' },
+  { href: '#trust-check', label: 'Personal Trust Check' },
+  { href: '#mini-check', label: 'Mini-check' },
+  { href: '#cost', label: 'Izmaksas' },
+  { href: '#faq', label: 'FAQ' },
+]
+.map((it) => (
               <a
                 key={it.href}
                 href={it.href}
@@ -884,17 +885,18 @@ export default function Home() {
           </div>
 
           <button
-            type="button"
-            onClick={() => document.getElementById('trust-check')?.scrollIntoView({ behavior: 'smooth' })}
-            className={cx(
-              'pointer-events-auto hidden sm:inline-flex shrink-0 items-center rounded-2xl px-4 py-2',
-              'text-xs font-bold text-white',
-              'bg-slate-900/90 hover:bg-slate-900 transition',
-              'ring-1 ring-white/10 shadow-sm'
-            )}
-          >
-            Saņemt pārbaudi →
-          </button>
+  type="button"
+  onClick={() => document.getElementById('ai-checker')?.scrollIntoView({ behavior: 'smooth' })}
+  className={cx(
+    'pointer-events-auto hidden sm:inline-flex shrink-0 items-center rounded-2xl px-4 py-2',
+    'text-xs font-bold text-white',
+    'bg-slate-900/90 hover:bg-slate-900 transition',
+    'ring-1 ring-white/10 shadow-sm'
+  )}
+>
+  Testēt 10 sekundēs →
+</button>
+
         </nav>
       </div>
 
@@ -936,10 +938,15 @@ export default function Home() {
           </GlassCard>
 
           <GlassCard className="p-8 mb-4 max-w-3xl mx-auto">
-            <h2 className="text-2xl font-bold mb-2">Bezmaksas Personal AI Trust Check 1 darba dienas laikā</h2>
-            <p className="text-slate-700 mb-6">
-              Parādām realitāti: vai AI spēj droši sasaistīt jūsu vārdu ar fleboloģiju pacienta jautājumos — un kas traucē, ja nespēj.
-            </p>
+  <h2 className="text-2xl font-bold mb-2">Bezmaksas Personal AI Trust Check 1 darba dienas laikā</h2>
+
+  <p className="text-slate-700 mb-2">
+    Pārbaudām: vai AI spēj droši nosaukt jūs pacienta jautājumos (un kas traucē, ja nespēj).
+  </p>
+
+  <p className="text-sm text-slate-600 mb-6">
+    Sāc ar 10 sek. reālo AI testu zemāk — ja redzi, ka AI tevi nemin, tad uztaisām pilno Trust Check ar iemesliem un rīcības plānu.
+  </p>
 
             {/* ✅ Saīsināts (noņemam dublēšanos) */}
             <div className="space-y-3 mb-8 text-left max-w-xl mx-auto">
@@ -957,12 +964,13 @@ export default function Home() {
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <GlassButton
-                onClick={() => document.getElementById('trust-check')?.scrollIntoView({ behavior: 'smooth' })}
-                className="w-full sm:w-auto px-8 py-5 text-xl font-bold"
-              >
-                Saņemt Personal AI Trust Check
-                <ArrowRight className="group-hover:translate-x-1 transition-transform" />
-              </GlassButton>
+  onClick={() => document.getElementById('ai-checker')?.scrollIntoView({ behavior: 'smooth' })}
+  className="w-full sm:w-auto px-8 py-5 text-xl font-bold"
+>
+  Testēt ar reālu AI (10 sek.)
+  <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+</GlassButton>
+
 
               <button
                 type="button"
@@ -973,6 +981,16 @@ export default function Home() {
               >
                 30 sek. demo (bez datu ievades)
               </button>
+<div className="mt-4 text-sm text-slate-700">
+  Nepietiek ar 10 sek. testu?{' '}
+  <button
+    type="button"
+    onClick={() => document.getElementById('trust-check')?.scrollIntoView({ behavior: 'smooth' })}
+    className="font-semibold text-slate-900 underline underline-offset-4 hover:opacity-80"
+  >
+    Saņemt Personal AI Trust Check (1 darba dienā)
+  </button>
+</div>
 
               {/* ✅ NEW: Paraugs */}
               <button
