@@ -656,7 +656,7 @@ export default function Home() {
         <div className="space-y-3">
           <div className="text-sm text-slate-700">Pacients:</div>
           <div className="rounded-2xl border border-white/20 bg-white/14 p-4 text-slate-900">
-            “Kur Rīgā pieņem augsti kvalificēts flebologs?”
+            “Kur Rīgā pieņem labs vēnu ārsts?”
           </div>
           <div className="text-sm text-slate-700 mt-3">AI atbilde (piemērs):</div>
           <div className="rounded-2xl border border-white/20 bg-white/14 p-4 text-sm text-slate-900">
@@ -673,7 +673,7 @@ export default function Home() {
           <div className="rounded-2xl border border-red-200/60 bg-red-50/40 p-4">
             <div className="font-semibold text-red-900">Jūsu vārds nav minēts.</div>
             <div className="text-sm text-red-900/90 mt-1">
-              Tas bieži nav par kvalitāti — AI vienkārši neredz pietiekami citējamus publiskus signālus par praksi.
+              Tas bieži nav par kvalitāti — AI vienkārši neredz pietiekami citējamus publiskus signālus par praksi un kompetenci.
             </div>
           </div>
           <div className="text-sm text-slate-700">Kas notiek pacienta galvā:</div>
@@ -722,7 +722,7 @@ export default function Home() {
               Ja AI nevar droši sasaistīt jūsu vārdu ar vēnu ārstēšanu un metodēm, tas izvēlas drošāku variantu — ieteikt citus.
             </div>
             <div className="text-sm font-semibold text-slate-900 mt-3">Nākamais solis:</div>
-            <div className="text-sm text-slate-800">Personal AI Trust Check (5 jautājumi + “fallback mode” iemesli) – 1 darba dienā.</div>
+            <div className="text-sm text-slate-800">Personal AI Trust Check (15 jautājumi + “fallback mode” iemesli) – 1 darba dienā.</div>
           </div>
         </div>
       ),
@@ -929,11 +929,17 @@ export default function Home() {
             profils, metodes, pieredze, avoti.
           </p>
 
-          <GlassCard className="p-6 mb-6 max-w-2xl mx-auto">
-            <div className="rounded-2xl border border-white/25 bg-white/25 backdrop-blur-xl px-6 py-5">
-              <p className="text-2xl font-medium text-slate-900 italic">"Kur Rīgā iesaki iet pie labu vēnu ārsta?"</p>
-            </div>
-          </GlassCard>
+<GlassCard className="p-6 mb-6 max-w-2xl mx-auto">
+  <div className="rounded-2xl border border-white/25 bg-white/25 backdrop-blur-xl px-6 py-5">
+    <div className="text-xs font-semibold tracking-wide text-slate-700 mb-2">
+      Tipisks pacienta jautājums AI:
+    </div>
+    <p className="text-2xl font-medium text-slate-900 italic">
+      “Kur Rīgā iesaki iet pie laba vēnu ārsta?”
+    </p>
+  </div>
+</GlassCard>
+
 
           <GlassCard className="p-6 mb-10 max-w-2xl mx-auto border-red-200/50">
             <div className="rounded-2xl border border-red-200/50 bg-red-50/40 backdrop-blur-xl px-6 py-5">
@@ -974,7 +980,7 @@ export default function Home() {
     onClick={() => document.getElementById('trust-check')?.scrollIntoView({ behavior: 'smooth' })}
     className="w-full sm:w-auto px-8 py-5 text-xl font-bold"
   >
-    Saņemt Personal AI Trust Check (1 darba dienas laikā)
+    Saņemt Personal AI Trust Check BEZ MAKSAS (1 darba dienas laikā)
     <ArrowRight className="group-hover:translate-x-1 transition-transform" />
   </GlassButton>
 
@@ -1496,316 +1502,367 @@ export default function Home() {
           <h2 className="text-4xl font-bold text-center mb-3">Pārbaudiet paši: ko AI iesaka fleboloģijā</h2>
           <p className="text-center text-slate-700 mb-10">Reāla atbilde no ChatGPT un Claude. (Pirmā iterācija: tikai fleboloģija.)</p>
 
-          <GlassCard className="p-8">
-            <div className="space-y-4 mb-6">
-              <div className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-xl p-4 ring-1 ring-white/10">
-                <div className="flex items-center justify-between mb-3 text-sm text-slate-700">
-                  <span>
-                    Nezini, ko rakstīt? Spied <span className="font-semibold">🎲</span> — ieliksim tipisku pacienta jautājumu.
-                  </span>
+          <GlassCard
+  className={cx(
+    'p-8',
+    showResults
+      ? 'border-emerald-200/60 shadow-[0_18px_70px_rgba(16,185,129,0.18)]'
+      : 'border-indigo-200/60 shadow-[0_18px_70px_rgba(99,102,241,0.12)]'
+  )}
+>
+  {/* ✅ Izcēlums: “10 sek. reālais AI tests” */}
+  <div
+    className={cx(
+      'mb-6 rounded-3xl border border-white/20 p-4 backdrop-blur-xl ring-1 ring-white/10',
+      showResults ? 'bg-emerald-50/50' : 'bg-indigo-50/50'
+    )}
+  >
+    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div className="min-w-0">
+        <div className="text-xs font-semibold tracking-wide text-slate-700">REĀLAIS AI TESTS • ChatGPT + Claude</div>
+        <div className="text-lg font-extrabold text-slate-900 leading-snug">
+          10 sekundes, lai redzētu — ko AI iesaka fleboloģijā
+        </div>
+        <div className="text-sm text-slate-700 mt-1">
+          {showResults ? 'Rezultāti ir zemāk šajā blokā.' : 'Ievadi jautājumu un nospied Enter.'}
+        </div>
+      </div>
 
-                  <button
-                    type="button"
-                    onClick={handleRandomQuery}
-                    className={cx(
-                      'h-10 w-10 inline-flex items-center justify-center rounded-2xl',
-                      'border border-white/20 bg-white/14 backdrop-blur-xl',
-                      'ring-1 ring-white/10 text-slate-900',
-                      'hover:bg-white/20 transition'
-                    )}
-                    title="Ģenerēt jautājumu"
-                    aria-label="Ģenerēt jautājumu"
-                  >
-                    <span aria-hidden className="text-lg leading-none">
-                      🎲
-                    </span>
-                  </button>
-                </div>
+      <div className="shrink-0 inline-flex items-center gap-2">
+        <span className={cx('h-2.5 w-2.5 rounded-full', showResults ? 'bg-emerald-500' : 'bg-indigo-500')} />
+        <span className="rounded-full bg-white/30 px-3 py-1 text-xs font-extrabold text-slate-900 ring-1 ring-white/20">
+          10 sek.
+        </span>
+      </div>
+    </div>
+  </div>
 
-                <label className="block text-sm font-medium mb-2 text-slate-800">Jautājums AI:</label>
-                <input
-                  id="ai-question"
-                  type="text"
-                  value={queryInput}
-                  onChange={(e) => setQueryInput(e.target.value)}
-                  placeholder="Kur Rīgā pieņem augsti kvalificēts flebologs?"
-                  className={inputBase}
-                />
-              </div>
+  {/* ✅ Enter submit: pārliekam uz form onSubmit */}
+  <form
+    onSubmit={(e) => {
+      e.preventDefault();
+      handleRealAITest();
+    }}
+    className="contents"
+  >
+    <div className="space-y-4 mb-6">
+      <div className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-xl p-4 ring-1 ring-white/10">
+        {/* ✅ Virsraksts virs tipiskā jautājuma */}
+        <div className="mb-3">
+          <div className="text-xs font-semibold tracking-wide text-slate-700">Tipisks pacienta jautājums AI:</div>
+          <div className="text-sm text-slate-600 mt-0.5">Spied 🎲 — ieliksim vienu no tipiskajiem jautājumiem.</div>
+        </div>
 
-              <div>
-                <label className="block text-sm font-medium mb-2 text-slate-800">Ārsta vārds, uzvārds (optional):</label>
-                <input
-                  type="text"
-                  value={doctorName}
-                  onChange={(e) => {
-                    const v = e.target.value;
-                    setDoctorName(v);
-                    if (!leadDoctor.trim()) setLeadDoctor(v);
-                    updateIdentity({ doctor: v.trim() || undefined });
-                  }}
-                  placeholder="Piemēram: Jānis Bērziņš"
-                  className={inputBase}
-                />
-                <div className="mt-2 text-xs text-slate-600">
-                  * AI ne vienmēr min ārstu vārdus. Ja vārds nav minēts, tas bieži nozīmē, ka publiskie signāli par praksi nav pietiekami citējami.
-                </div>
-              </div>
+        <div className="flex items-center justify-between mb-3 text-sm text-slate-700">
+          <span>
+            Nezini, ko rakstīt? Spied <span className="font-semibold">🎲</span> — ieliksim tipisku pacienta jautājumu.
+          </span>
+
+          <button
+            type="button"
+            onClick={handleRandomQuery}
+            className={cx(
+              'h-10 w-10 inline-flex items-center justify-center rounded-2xl',
+              'border border-white/20 bg-white/14 backdrop-blur-xl',
+              'ring-1 ring-white/10 text-slate-900',
+              'hover:bg-white/20 transition'
+            )}
+            title="Ģenerēt jautājumu"
+            aria-label="Ģenerēt jautājumu"
+          >
+            <span aria-hidden className="text-lg leading-none">
+              🎲
+            </span>
+          </button>
+        </div>
+
+        <label className="block text-sm font-medium mb-2 text-slate-800">Jautājums AI:</label>
+        <input
+          id="ai-question"
+          type="text"
+          value={queryInput}
+          onChange={(e) => setQueryInput(e.target.value)}
+          placeholder="Kur Rīgā pieņem augsti kvalificēts flebologs?"
+          className={inputBase}
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium mb-2 text-slate-800">Ārsta vārds, uzvārds (optional):</label>
+        <input
+          type="text"
+          value={doctorName}
+          onChange={(e) => {
+            const v = e.target.value;
+            setDoctorName(v);
+            if (!leadDoctor.trim()) setLeadDoctor(v);
+            updateIdentity({ doctor: v.trim() || undefined });
+          }}
+          placeholder="Piemēram: Jānis Bērziņš"
+          className={inputBase}
+        />
+        <div className="mt-2 text-xs text-slate-600">
+          * AI ne vienmēr min ārstu vārdus. Ja vārds nav minēts, tas bieži nozīmē, ka publiskie signāli par praksi nav pietiekami citējami.
+        </div>
+      </div>
+    </div>
+
+    {/* ✅ poga kā submit (Enter strādās) */}
+    <GlassButton type="submit" disabled={isLoading || !queryInput.trim()} className="w-full">
+      {isLoading ? (
+        <>
+          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+          <span>Jautā ChatGPT un Claude...</span>
+        </>
+      ) : (
+        <>
+          <Search className="w-5 h-5" />
+          Testēt ar REĀLU AI (ChatGPT + Claude)
+        </>
+      )}
+    </GlassButton>
+  </form>
+
+  {/* WHY DIFFERENT */}
+  <div className="mt-5 rounded-2xl border border-white/20 bg-white/10">
+    <button
+      type="button"
+      onClick={() => setShowWhyDifferent((v) => !v)}
+      className="w-full px-4 py-3 flex justify-between text-left font-medium"
+    >
+      Kāpēc rezultāti var atšķirties no tiem, ko redzu es?
+      <ChevronDown className={cx('w-5 h-5 transition', showWhyDifferent && 'rotate-180')} />
+    </button>
+
+    {showWhyDifferent && (
+      <div className="px-4 pb-4 text-sm text-slate-800 space-y-2">
+        <p>AI neveido oficiālus reitingus. Tas apkopo publiski pieejamu informāciju un interpretē to atkarībā no jautājuma.</p>
+        <ul className="list-disc pl-5 space-y-1">
+          <li>ChatGPT un Claude darbojas atšķirīgi</li>
+          <li>Jautājuma formulējums maina ieteikumus</li>
+          <li>Atbilde pacientam ≠ atbilde profesionālim</li>
+        </ul>
+
+        <GlassButton
+          onClick={() => document.getElementById('trust-check')?.scrollIntoView({ behavior: 'smooth' })}
+          className="mt-3 w-full bg-slate-900"
+        >
+          Vēlies Personal AI Trust Check (1 darba dienā)?
+        </GlassButton>
+      </div>
+    )}
+  </div>
+
+  {apiError && (
+    <div className="mt-6 p-4 rounded-2xl border border-red-200/60 bg-red-50/40 backdrop-blur-xl">
+      <div className="flex items-start gap-2">
+        <AlertCircle className="w-5 h-5 text-red-700 flex-shrink-0 mt-0.5" />
+        <div>
+          <div className="font-semibold text-red-800">API kļūda</div>
+          <div className="text-sm text-red-800/90 mt-1">{apiError}</div>
+        </div>
+      </div>
+    </div>
+  )}
+
+  {showResults && aiResults && (
+    <div className="mt-8 space-y-6">
+      {aiResults.chatgpt && (
+        <GlassCard className="p-6 border-emerald-200/60">
+          <div className="flex items-start gap-3 mb-4">
+            <div className="w-10 h-10 rounded-full bg-emerald-500/15 border border-white/25 backdrop-blur-xl flex items-center justify-center flex-shrink-0">
+              <span className="text-xl">🤖</span>
             </div>
+            <div className="flex-1 min-w-0">
+              <div className="font-bold text-lg mb-2 text-emerald-900">ChatGPT atbilde:</div>
 
-            <GlassButton onClick={handleRealAITest} disabled={isLoading || !queryInput.trim()} className="w-full">
-              {isLoading ? (
+              {aiResults.chatgpt.success ? (
                 <>
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  <span>Jautā ChatGPT un Claude...</span>
+                  <div className="rounded-2xl border border-white/20 bg-white/14 backdrop-blur-xl p-4 mb-4">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-semibold text-slate-900">Kopsavilkums</div>
+
+                        {doctorName ? (
+                          aiResults.userClinicFound?.chatgpt ? (
+                            <div className="mt-2 flex items-center gap-2 text-emerald-900 font-semibold">
+                              <CheckCircle2 className="w-5 h-5" />
+                              <span>Ārsts ir minēts</span>
+                            </div>
+                          ) : (
+                            <div className="mt-2 flex items-center gap-2 text-red-800 font-semibold">
+                              <AlertCircle className="w-5 h-5" />
+                              <span>Ārsts nav minēts</span>
+                            </div>
+                          )
+                        ) : (
+                          <div className="mt-2 text-sm text-slate-700">Ievadi ārsta vārdu, lai pārbaudītu “vai minēts”.</div>
+                        )}
+
+                        {aiResults.chatgpt.clinics?.length > 0 && (
+                          <div className="mt-3">
+                            <div className="text-xs font-semibold text-slate-700 mb-1">3 minētie varianti:</div>
+                            <div className="flex flex-wrap gap-2">
+                              {aiResults.chatgpt.clinics.slice(0, 3).map((c: string, i: number) => (
+                                <span key={i} className="text-xs rounded-full bg-white/25 border border-white/20 px-3 py-1">
+                                  {c}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowGptFull((v) => {
+                            const next = !v;
+                            track('ai_full_toggle', { model: 'chatgpt', open: next });
+                            return next;
+                          });
+                        }}
+                        className="w-full sm:w-auto shrink-0 rounded-2xl px-3 py-2 text-sm font-semibold border border-white/20 bg-white/20 hover:bg-white/30 transition"
+                      >
+                        {showGptFull ? 'Paslēpt pilno atbildi' : 'Skatīt pilnu atbildi'}
+                      </button>
+                    </div>
+                  </div>
+
+                  {showGptFull && (
+                    <div className="rounded-2xl border border-white/20 bg-white/14 backdrop-blur-xl p-4 mb-4 text-sm text-slate-900 whitespace-pre-wrap break-words overflow-hidden">
+                      {aiResults.chatgpt.fullResponse}
+                    </div>
+                  )}
                 </>
               ) : (
-                <>
-                  <Search className="w-5 h-5" />
-                  Testēt ar REĀLU AI (ChatGPT + Claude)
-                </>
-              )}
-            </GlassButton>
-
-            {/* WHY DIFFERENT */}
-            <div className="mt-5 rounded-2xl border border-white/20 bg-white/10">
-              <button
-                type="button"
-                onClick={() => setShowWhyDifferent((v) => !v)}
-                className="w-full px-4 py-3 flex justify-between text-left font-medium"
-              >
-                Kāpēc rezultāti var atšķirties no tiem, ko redzu es?
-                <ChevronDown className={cx('w-5 h-5 transition', showWhyDifferent && 'rotate-180')} />
-              </button>
-
-              {showWhyDifferent && (
-                <div className="px-4 pb-4 text-sm text-slate-800 space-y-2">
-                  <p>AI neveido oficiālus reitingus. Tas apkopo publiski pieejamu informāciju un interpretē to atkarībā no jautājuma.</p>
-                  <ul className="list-disc pl-5 space-y-1">
-                    <li>ChatGPT un Claude darbojas atšķirīgi</li>
-                    <li>Jautājuma formulējums maina ieteikumus</li>
-                    <li>Atbilde pacientam ≠ atbilde profesionālim</li>
-                  </ul>
-
-                  <GlassButton
-                    onClick={() => document.getElementById('trust-check')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="mt-3 w-full bg-slate-900"
-                  >
-                    Vēlies Personal AI Trust Check (1 darba dienā)?
-                  </GlassButton>
-                </div>
+                <div className="text-red-800 text-sm">Kļūda: {aiResults.chatgpt.error}</div>
               )}
             </div>
+          </div>
+        </GlassCard>
+      )}
 
-            {apiError && (
-              <div className="mt-6 p-4 rounded-2xl border border-red-200/60 bg-red-50/40 backdrop-blur-xl">
-                <div className="flex items-start gap-2">
-                  <AlertCircle className="w-5 h-5 text-red-700 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <div className="font-semibold text-red-800">API kļūda</div>
-                    <div className="text-sm text-red-800/90 mt-1">{apiError}</div>
-                  </div>
-                </div>
-              </div>
-            )}
+      {aiResults.claude && (
+        <GlassCard className="p-6 border-blue-200/60">
+          <div className="flex items-start gap-3 mb-4">
+            <div className="w-10 h-10 rounded-full bg-blue-500/15 border border-white/25 backdrop-blur-xl flex items-center justify-center flex-shrink-0">
+              <span className="text-xl">🧠</span>
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="font-bold text-lg mb-2 text-blue-900">Claude atbilde:</div>
 
-            {showResults && aiResults && (
-              <div className="mt-8 space-y-6">
-                {aiResults.chatgpt && (
-                  <GlassCard className="p-6 border-emerald-200/60">
-                    <div className="flex items-start gap-3 mb-4">
-                      <div className="w-10 h-10 rounded-full bg-emerald-500/15 border border-white/25 backdrop-blur-xl flex items-center justify-center flex-shrink-0">
-                        <span className="text-xl">🤖</span>
-                      </div>
+              {aiResults.claude.success ? (
+                <>
+                  <div className="rounded-2xl border border-white/20 bg-white/14 backdrop-blur-xl p-4 mb-4">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                       <div className="flex-1 min-w-0">
-                        <div className="font-bold text-lg mb-2 text-emerald-900">ChatGPT atbilde:</div>
+                        <div className="text-sm font-semibold text-slate-900">Kopsavilkums</div>
 
-                        {aiResults.chatgpt.success ? (
-                          <>
-                            <div className="rounded-2xl border border-white/20 bg-white/14 backdrop-blur-xl p-4 mb-4">
-                              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
-                                <div className="flex-1 min-w-0">
-                                  <div className="text-sm font-semibold text-slate-900">Kopsavilkums</div>
-
-                                  {doctorName ? (
-                                    aiResults.userClinicFound?.chatgpt ? (
-                                      <div className="mt-2 flex items-center gap-2 text-emerald-900 font-semibold">
-                                        <CheckCircle2 className="w-5 h-5" />
-                                        <span>Ārsts ir minēts</span>
-                                      </div>
-                                    ) : (
-                                      <div className="mt-2 flex items-center gap-2 text-red-800 font-semibold">
-                                        <AlertCircle className="w-5 h-5" />
-                                        <span>Ārsts nav minēts</span>
-                                      </div>
-                                    )
-                                  ) : (
-                                    <div className="mt-2 text-sm text-slate-700">Ievadi ārsta vārdu, lai pārbaudītu “vai minēts”.</div>
-                                  )}
-
-                                  {aiResults.chatgpt.clinics?.length > 0 && (
-                                    <div className="mt-3">
-                                      <div className="text-xs font-semibold text-slate-700 mb-1">3 minētie varianti:</div>
-                                      <div className="flex flex-wrap gap-2">
-                                        {aiResults.chatgpt.clinics.slice(0, 3).map((c: string, i: number) => (
-                                          <span key={i} className="text-xs rounded-full bg-white/25 border border-white/20 px-3 py-1">
-                                            {c}
-                                          </span>
-                                        ))}
-                                      </div>
-                                    </div>
-                                  )}
-                                </div>
-
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    setShowGptFull((v) => {
-                                      const next = !v;
-                                      track('ai_full_toggle', { model: 'chatgpt', open: next });
-                                      return next;
-                                    });
-                                  }}
-                                  className="w-full sm:w-auto shrink-0 rounded-2xl px-3 py-2 text-sm font-semibold border border-white/20 bg-white/20 hover:bg-white/30 transition"
-                                >
-                                  {showGptFull ? 'Paslēpt pilno atbildi' : 'Skatīt pilnu atbildi'}
-                                </button>
-                              </div>
+                        {doctorName ? (
+                          aiResults.userClinicFound?.claude ? (
+                            <div className="mt-2 flex items-center gap-2 text-emerald-900 font-semibold">
+                              <CheckCircle2 className="w-5 h-5" />
+                              <span>Ārsts ir minēts</span>
                             </div>
-
-                            {showGptFull && (
-                              <div className="rounded-2xl border border-white/20 bg-white/14 backdrop-blur-xl p-4 mb-4 text-sm text-slate-900 whitespace-pre-wrap break-words overflow-hidden">
-                                {aiResults.chatgpt.fullResponse}
-                              </div>
-                            )}
-                          </>
+                          ) : (
+                            <div className="mt-2 flex items-center gap-2 text-red-800 font-semibold">
+                              <AlertCircle className="w-5 h-5" />
+                              <span>Ārsts nav minēts</span>
+                            </div>
+                          )
                         ) : (
-                          <div className="text-red-800 text-sm">Kļūda: {aiResults.chatgpt.error}</div>
+                          <div className="mt-2 text-sm text-slate-700">Ievadi ārsta vārdu, lai pārbaudītu “vai minēts”.</div>
+                        )}
+
+                        {aiResults.claude.clinics?.length > 0 && (
+                          <div className="mt-3">
+                            <div className="text-xs font-semibold text-slate-700 mb-1">3 minētie varianti:</div>
+                            <div className="flex flex-wrap gap-2">
+                              {aiResults.claude.clinics.slice(0, 3).map((c: string, i: number) => (
+                                <span key={i} className="text-xs rounded-full bg-white/25 border border-white/20 px-3 py-1">
+                                  {c}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
                         )}
                       </div>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowClaudeFull((v) => {
+                            const next = !v;
+                            track('ai_full_toggle', { model: 'claude', open: next });
+                            return next;
+                          });
+                        }}
+                        className="w-full sm:w-auto shrink-0 rounded-2xl px-3 py-2 text-sm font-semibold border border-white/20 bg-white/20 hover:bg-white/30 transition"
+                      >
+                        {showClaudeFull ? 'Paslēpt pilno atbildi' : 'Skatīt pilnu atbildi'}
+                      </button>
                     </div>
-                  </GlassCard>
-                )}
-
-                {aiResults.claude && (
-                  <GlassCard className="p-6 border-blue-200/60">
-                    <div className="flex items-start gap-3 mb-4">
-                      <div className="w-10 h-10 rounded-full bg-blue-500/15 border border-white/25 backdrop-blur-xl flex items-center justify-center flex-shrink-0">
-                        <span className="text-xl">🧠</span>
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="font-bold text-lg mb-2 text-blue-900">Claude atbilde:</div>
-
-                        {aiResults.claude.success ? (
-                          <>
-                            <div className="rounded-2xl border border-white/20 bg-white/14 backdrop-blur-xl p-4 mb-4">
-                              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
-                                <div className="flex-1 min-w-0">
-                                  <div className="text-sm font-semibold text-slate-900">Kopsavilkums</div>
-
-                                  {doctorName ? (
-                                    aiResults.userClinicFound?.claude ? (
-                                      <div className="mt-2 flex items-center gap-2 text-emerald-900 font-semibold">
-                                        <CheckCircle2 className="w-5 h-5" />
-                                        <span>Ārsts ir minēts</span>
-                                      </div>
-                                    ) : (
-                                      <div className="mt-2 flex items-center gap-2 text-red-800 font-semibold">
-                                        <AlertCircle className="w-5 h-5" />
-                                        <span>Ārsts nav minēts</span>
-                                      </div>
-                                    )
-                                  ) : (
-                                    <div className="mt-2 text-sm text-slate-700">Ievadi ārsta vārdu, lai pārbaudītu “vai minēts”.</div>
-                                  )}
-
-                                  {aiResults.claude.clinics?.length > 0 && (
-                                    <div className="mt-3">
-                                      <div className="text-xs font-semibold text-slate-700 mb-1">3 minētie varianti:</div>
-                                      <div className="flex flex-wrap gap-2">
-                                        {aiResults.claude.clinics.slice(0, 3).map((c: string, i: number) => (
-                                          <span key={i} className="text-xs rounded-full bg-white/25 border border-white/20 px-3 py-1">
-                                            {c}
-                                          </span>
-                                        ))}
-                                      </div>
-                                    </div>
-                                  )}
-                                </div>
-
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    setShowClaudeFull((v) => {
-                                      const next = !v;
-                                      track('ai_full_toggle', { model: 'claude', open: next });
-                                      return next;
-                                    });
-                                  }}
-                                  className="w-full sm:w-auto shrink-0 rounded-2xl px-3 py-2 text-sm font-semibold border border-white/20 bg-white/20 hover:bg-white/30 transition"
-                                >
-                                  {showClaudeFull ? 'Paslēpt pilno atbildi' : 'Skatīt pilnu atbildi'}
-                                </button>
-                              </div>
-                            </div>
-
-                            {showClaudeFull && (
-                              <div className="rounded-2xl border border-white/20 bg-white/14 backdrop-blur-xl p-4 mb-4 text-sm text-slate-900 whitespace-pre-wrap break-words overflow-hidden">
-                                {aiResults.claude.fullResponse}
-                              </div>
-                            )}
-                          </>
-                        ) : (
-                          <div className="text-red-800 text-sm">Kļūda: {aiResults.claude.error}</div>
-                        )}
-                      </div>
-                    </div>
-                  </GlassCard>
-                )}
-
-                <GlassCard className="p-6 border-purple-200/60">
-                  <h3 className="font-bold text-lg mb-3">📊 Kopsavilkums</h3>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between gap-4">
-                      <span className="text-slate-700">Specialitāte:</span>
-                      <span className="font-semibold text-slate-900 text-right">{SPECIALTY_LABEL}</span>
-                    </div>
-                    <div className="flex justify-between gap-4">
-                      <span className="text-slate-700">Jautājums:</span>
-                      <span className="font-semibold text-slate-900 text-right">{queryInput}</span>
-                    </div>
-                    {doctorName && (
-                      <>
-                        <div className="flex justify-between gap-4">
-                          <span className="text-slate-700">Ārsts:</span>
-                          <span className="font-semibold text-slate-900">{doctorName}</span>
-                        </div>
-                        <div className="flex justify-between pt-2 border-t border-white/20">
-                          <span className="text-slate-700">Rezultāts:</span>
-                          <span className="font-semibold">
-                            {aiResults.userClinicFound?.chatgpt || aiResults.userClinicFound?.claude ? (
-                              <span className="text-emerald-800">✅ Minēts vismaz vienā AI</span>
-                            ) : (
-                              <span className="text-red-800">❌ Nav minēts nevienā AI</span>
-                            )}
-                          </span>
-                        </div>
-                      </>
-                    )}
                   </div>
-                </GlassCard>
 
-                <GlassButton
-                  onClick={() => document.getElementById('trust-check')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="w-full bg-gradient-to-b from-purple-500/95 via-purple-600/95 to-indigo-700/95 shadow-[0_10px_30px_rgba(124,58,237,0.22)]"
-                >
-                  Saņemt Personal AI Trust Check → (1 darba dienā)
-                </GlassButton>
+                  {showClaudeFull && (
+                    <div className="rounded-2xl border border-white/20 bg-white/14 backdrop-blur-xl p-4 mb-4 text-sm text-slate-900 whitespace-pre-wrap break-words overflow-hidden">
+                      {aiResults.claude.fullResponse}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="text-red-800 text-sm">Kļūda: {aiResults.claude.error}</div>
+              )}
+            </div>
+          </div>
+        </GlassCard>
+      )}
 
-                <p className="text-xs text-slate-700">Piezīme: AI atbildes var atšķirties atkarībā no jautājuma formulējuma un modeļa.</p>
+      <GlassCard className="p-6 border-purple-200/60">
+        <h3 className="font-bold text-lg mb-3">📊 Kopsavilkums</h3>
+        <div className="space-y-2 text-sm">
+          <div className="flex justify-between gap-4">
+            <span className="text-slate-700">Specialitāte:</span>
+            <span className="font-semibold text-slate-900 text-right">{SPECIALTY_LABEL}</span>
+          </div>
+          <div className="flex justify-between gap-4">
+            <span className="text-slate-700">Jautājums:</span>
+            <span className="font-semibold text-slate-900 text-right">{queryInput}</span>
+          </div>
+          {doctorName && (
+            <>
+              <div className="flex justify-between gap-4">
+                <span className="text-slate-700">Ārsts:</span>
+                <span className="font-semibold text-slate-900">{doctorName}</span>
               </div>
-            )}
-          </GlassCard>
+              <div className="flex justify-between pt-2 border-t border-white/20">
+                <span className="text-slate-700">Rezultāts:</span>
+                <span className="font-semibold">
+                  {aiResults.userClinicFound?.chatgpt || aiResults.userClinicFound?.claude ? (
+                    <span className="text-emerald-800">✅ Minēts vismaz vienā AI</span>
+                  ) : (
+                    <span className="text-red-800">❌ Nav minēts nevienā AI</span>
+                  )}
+                </span>
+              </div>
+            </>
+          )}
+        </div>
+      </GlassCard>
+
+      <GlassButton
+        onClick={() => document.getElementById('trust-check')?.scrollIntoView({ behavior: 'smooth' })}
+        className="w-full bg-gradient-to-b from-purple-500/95 via-purple-600/95 to-indigo-700/95 shadow-[0_10px_30px_rgba(124,58,237,0.22)]"
+      >
+        Saņemt Personal AI Trust Check → (1 darba dienā)
+      </GlassButton>
+
+      <p className="text-xs text-slate-700">Piezīme: AI atbildes var atšķirties atkarībā no jautājuma formulējuma un modeļa.</p>
+    </div>
+  )}
+</GlassCard>
+
         </div>
       </section>
 
