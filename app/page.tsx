@@ -705,82 +705,214 @@ export default function Home() {
   // ==========================================
   // FAQ data (ārsts)
   // ==========================================
-  const faqs: Array<{ q: string; a: React.ReactNode }> = [
-    {
-      q: 'Vai šis ir mārketinga jautājums?',
-      a: (
-        <div className="space-y-3 text-slate-800 leading-relaxed">
-          <p>
-            <strong>Nē.</strong> Tas ir <span className="font-semibold">uzticības un profesionālās reputācijas</span> jautājums.
-          </p>
-          <div className="rounded-2xl border border-blue-200/60 bg-blue-50/40 p-4">
-            <p className="font-semibold text-slate-900">Vienā teikumā:</p>
-            <p className="mt-1">
-              AI min ārstu tikai tad, ja publiski ir <span className="font-semibold">skaidri, citējami un saskaņoti signāli</span>, ka tieši jūs
-              šo problēmu risināt.
-            </p>
-          </div>
-        </div>
-      ),
-    },
-    {
-      q: 'Kāpēc AI dažreiz “neuzticas” un ieslēdzas fallback mode?',
-      a: (
-        <div className="space-y-4 text-slate-800 leading-relaxed">
-          <div className="rounded-2xl border border-slate-200/60 bg-white/30 p-4">
-            <p>
-              AI <strong>neizdomā uzticību</strong>. Tas tikai <strong>atpazīst uzticību</strong>, ja tā jau ir publiski pierādāma un konsekventa.
-            </p>
-          </div>
-          <div>
-            <p className="font-semibold text-slate-900 mb-2">Fallback mode parasti ieslēdzas, ja:</p>
-            <ul className="list-disc pl-5 space-y-1">
-              <li>profilā nav skaidri aprakstīts “ko tieši daru” (metodes, indikācijas),</li>
-              <li>nav citējamu pierādījumu (sertifikāti, pieredze, publikācijas/konferences),</li>
-              <li>ārsts nav konsekventi sasaistīts ar fleboloģiju dažādos avotos,</li>
-              <li>lapa ir grūti nolasāma (JS-only, noindex, nav satura).</li>
-            </ul>
-          </div>
-          <div className="rounded-2xl border border-amber-200/60 bg-amber-50/40 p-4">
-            <p className="font-semibold text-amber-900">Ko tas nozīmē?</p>
-            <p className="mt-1 text-amber-900/90">AI izvēlas drošāku ceļu — ieteikt citus, par kuriem ir vairāk skaidru signālu.</p>
-          </div>
-        </div>
-      ),
-    },
-    {
-      q: 'Vai varat garantēt, ka AI mani minēs?',
-      a: (
-        <div className="space-y-3 text-slate-800 leading-relaxed">
-          <p>
-            Konkrētu vietu vai “TOP-3” <strong>neviens godīgi negarantē</strong>, jo atbilde mainās pēc jautājuma un modeļa.
-          </p>
-          <div className="rounded-2xl border border-slate-200/60 bg-white/30 p-4">
-            <p className="font-semibold text-slate-900">Ko mēs garantējam:</p>
-            <ul className="mt-2 list-disc pl-5 space-y-1">
-              <li>pārbaudi 5 tipiskos pacientu jautājumos,</li>
-              <li>skaidrus iemeslus, kāpēc jūs nemin,</li>
-              <li>rīcības plānu (ko publicēt un kur),</li>
-              <li>pārtestu pēc izmaiņām.</li>
-            </ul>
-          </div>
-        </div>
-      ),
-    },
-    {
-      q: 'Cik ātri var redzēt uzlabojumu efektu?',
-      a: (
-        <div className="space-y-3 text-slate-800 leading-relaxed">
-          <p>
-            Pirmos uzlabojumus parasti var redzēt <strong>2–4 nedēļu laikā</strong>.
-          </p>
-          <p>
-            Stabilāka ietekme veidojas <strong>2–3 mēnešu laikā</strong>, atkarībā no konkurences un publiskās informācijas kvalitātes.
+  // ==========================================
+const faqs: Array<{ q: string; a: React.ReactNode }> = [
+  {
+    q: 'Kas tas īsti ir — reklāma vai reputācijas audits?',
+    a: (
+      <div className="space-y-3 text-slate-800 leading-relaxed">
+        <p>
+          <strong>Tas nav reklāmas pakalpojums.</strong>
+        </p>
+        <p>
+          Tas ir <span className="font-semibold">AI reputācijas audits</span>: vai mākslīgais intelekts spēj droši sasaistīt jūsu vārdu ar jūsu
+          specialitāti, metodēm un kompetenci pacienta uzdotajos jautājumos.
+        </p>
+        <div className="rounded-2xl border border-blue-200/60 bg-blue-50/40 p-4">
+          <p className="font-semibold text-slate-900">Ja nespēj — ko tas nozīmē?</p>
+          <p className="mt-1 text-slate-800">
+            Parādām <span className="font-semibold">kāpēc</span>, un <span className="font-semibold">ko tieši publicēt/strukturēt</span>, lai situācija
+            mainītos.
           </p>
         </div>
-      ),
-    },
-  ];
+      </div>
+    ),
+  },
+  {
+    q: 'Kāds ir pareizais process (workflow)?',
+    a: (
+      <div className="space-y-4 text-slate-800 leading-relaxed">
+        <p className="font-semibold text-slate-900">4 soļi:</p>
+
+        <ol className="space-y-2 list-decimal pl-5">
+          <li>
+            <span className="font-semibold">Mini-check (5–10 sek.)</span> — tehniskā lasāmība + pamat-signāli (vai AI vispār var nolasīt lapu).
+          </li>
+          <li>
+            <span className="font-semibold">Reālais AI tests (10 sek.)</span> — ko šobrīd iesaka ChatGPT un Claude jautājumā, kuru uzdod pacients.
+          </li>
+          <li>
+            <span className="font-semibold">Personal AI Trust Check (bez maksas, 1 darba dienā)</span> — 5 jautājumi, “fallback mode” jeb “mākslīgais
+            intelekts stāsta muļķības” iemesli, top-5 signāli, kas jālabo, un 30 dienu plāns rīcībai.
+          </li>
+          <li>
+            <span className="font-semibold">Pirmā mēneša sprints (ieviešana)</span> — ja gribiet, lai plāns pārtop reālā publiskā atainošanā
+            (profils/FAQ/strukturētie dati/profilu saskaņošana) + tests pēc mēneša.
+          </li>
+        </ol>
+
+        <div className="rounded-2xl border border-slate-200/60 bg-white/30 p-4">
+          <p className="font-semibold text-slate-900">Loģika ir vienkārša:</p>
+          <p className="mt-1 text-slate-800">Vispirms “proof”, pēc tam — plāns un (ja vajag) ieviešana.</p>
+        </div>
+      </div>
+    ),
+  },
+  {
+    q: 'Kas tieši ir bez maksas, un kas ir maksas?',
+    a: (
+      <div className="space-y-4 text-slate-800 leading-relaxed">
+        <div className="rounded-2xl border border-emerald-200/60 bg-emerald-50/40 p-4">
+          <p className="font-semibold text-emerald-900">Bezmaksas:</p>
+          <p className="mt-1 text-emerald-900/90">Personal AI Trust Check (diagnostika + rīcības plāns).</p>
+        </div>
+
+        <div className="rounded-2xl border border-amber-200/60 bg-amber-50/40 p-4">
+          <p className="font-semibold text-amber-900">Maksas:</p>
+          <p className="mt-1 text-amber-900/90">
+            ieviešana (saturs, struktūra, publicēšana, profilu saskaņošana, tests pēc mēneša kā to redz pacients).
+          </p>
+        </div>
+
+        <div className="rounded-2xl border border-blue-200/60 bg-blue-50/40 p-4">
+          <p className="font-semibold text-slate-900">Vienā teikumā:</p>
+          <p className="mt-1 text-slate-800">
+            Bez maksas ir <span className="font-semibold">“kāpēc” + “ko darīt”</span>, maksas ir <span className="font-semibold">“izdarīt”</span>.
+          </p>
+        </div>
+      </div>
+    ),
+  },
+  {
+    q: 'Ko tieši jūs izdarāt Pirmā mēneša sprinta jeb ieviešanas laikā?',
+    a: (
+      <div className="space-y-4 text-slate-800 leading-relaxed">
+        <p>
+          <strong>Pirmā mēneša sprints nav “konsultācija”.</strong> Tie ir izpildes darbi.
+        </p>
+
+        <div className="rounded-2xl border border-white/20 bg-white/12 p-4">
+          <p className="font-semibold text-slate-900 mb-2">Parasti 30 dienās:</p>
+          <ul className="list-disc pl-5 space-y-1">
+            <li>sakārtojam ārsta profilu (specializācija, metodes, indikācijas, pieredze) tā, lai to var citēt arī AI,</li>
+            <li>uztaisām 8–12 FAQ ar pacienta jautājumiem,</li>
+            <li>iedodam strukturētos datus (schema),</li>
+            <li>saskaņojam profilu 2–3 avotos (klīnika/katalogs/sociālie tīkli),</li>
+            <li>veicam atkārtotu testu tajos pašos jautājumos.</li>
+          </ul>
+        </div>
+      </div>
+    ),
+  },
+  {
+    q: 'Cik tas maksā?',
+    a: (
+      <div className="space-y-4 text-slate-800 leading-relaxed">
+        <div className="rounded-2xl border border-indigo-200/60 bg-indigo-50/40 p-4">
+          <p className="font-semibold text-slate-900">Pirmā mēneša sprints jeb ieviešana — no €690.</p>
+          <p className="mt-1 text-slate-800">
+            Ja vajag vairāk (piem., nav sakārtotu avotu, jārada vairāk satura vai jāsaskaņo vairāk profilu), tad tipiski{' '}
+            <span className="font-semibold">€690–€1,290</span>.
+          </p>
+        </div>
+
+        <div className="rounded-2xl border border-slate-200/60 bg-white/30 p-4">
+          <p className="font-semibold text-slate-900">Svarīgi:</p>
+          <p className="mt-1 text-slate-800">
+            cenu vienmēr iedodam atbilstoši realitātei. Ja AI testā redzat, ka tevi nemin — tad ir jēga runāt par ieviešanu.
+          </p>
+        </div>
+      </div>
+    ),
+  },
+  {
+    q: 'Kāpēc cenu nerādām uzreiz?',
+    a: (
+      <div className="space-y-3 text-slate-800 leading-relaxed">
+        <p>Jo pirms realitātes apzināšanās cena ir “tukšs cipars”.</p>
+        <div className="rounded-2xl border border-blue-200/60 bg-blue-50/40 p-4">
+          <p className="font-semibold text-slate-900">Kompromiss, kas ir psiholoģiski godīgs:</p>
+          <p className="mt-1 text-slate-800">
+            vispirms parādām realitāti (AI tests / mini-check), un tikai tad — cik maksā to izlabot, ja tas ir aktuāli.
+          </p>
+        </div>
+      </div>
+    ),
+  },
+  {
+    q: 'Vai varat garantēt, ka AI mani minēs?',
+    a: (
+      <div className="space-y-4 text-slate-800 leading-relaxed">
+        <p>
+          Neviens godīgi nevar garantēt “TOP-3”, jo atbilde mainās atkarībā no jautājuma, valodas un modeļa.
+        </p>
+        <div className="rounded-2xl border border-slate-200/60 bg-white/30 p-4">
+          <p className="font-semibold text-slate-900">Ko mēs garantējam:</p>
+          <ul className="mt-2 list-disc pl-5 space-y-1">
+            <li>skaidrus iemeslus, kas šobrīd bloķē pieminēšanu,</li>
+            <li>konkrētu ieviešanas plānu, kas palielina iespēju, ka AI var tevi droši citēt.</li>
+          </ul>
+        </div>
+      </div>
+    ),
+  },
+  {
+    q: 'Kāpēc “ja nesāksi tagad” tas kļūs sarežģītāk?',
+    a: (
+      <div className="space-y-4 text-slate-800 leading-relaxed">
+        <p>Te nav runa par “algoritma triku”. Runa ir par inerci:</p>
+        <ul className="list-disc pl-5 space-y-1">
+          <li>Pacienti arvien biežāk sāk ar AI, nevis ar Google meklēšanu.</li>
+          <li>
+            AI biežāk citē tos, kam jau ir sakārtota publiskā identitāte (konsekventi profili, citējams saturs, avoti).
+          </li>
+          <li>
+            Ja tu nesāc tagad, konkurenti uzkrāj strukturētus signālus, un atstarpe ar kolēģiem pieaugs. Tas nav par jūsu kompetenci, bet gan par
+            redzamību AI laikmetā “AI acīs”.
+          </li>
+        </ul>
+
+        <div className="rounded-2xl border border-amber-200/60 bg-amber-50/40 p-4">
+          <p className="font-semibold text-amber-900">Tāpēc:</p>
+          <p className="mt-1 text-amber-900/90">
+            labākais brīdis sakārtot pamatu ir tagad, kad var paņemt laukumu, kas vēl nav aizņemts ar 30 dienu sprintu, nevis dzīties pakaļ 6 mēnešus vai
+            gadu vēlāk.
+          </p>
+        </div>
+      </div>
+    ),
+  },
+  {
+    q: 'Vai man obligāti vajag savu mājaslapu?',
+    a: (
+      <div className="space-y-3 text-slate-800 leading-relaxed">
+        <p>
+          <strong>Nē.</strong> Var sākt arī ar klīnikas profilu, kur strādājiet + vienu stabilu publisku avotu + FAQ bloku.
+        </p>
+        <div className="rounded-2xl border border-blue-200/60 bg-blue-50/40 p-4">
+          <p className="font-semibold text-slate-900">Svarīgākais:</p>
+          <p className="mt-1 text-slate-800">
+            konsekvence (vārds, specialitāte, metodes, pierādāmi fakti) un nolasāmība.
+          </p>
+        </div>
+      </div>
+    ),
+  },
+  {
+    q: 'Kā ātri var redzēt efektu?',
+    a: (
+      <div className="space-y-3 text-slate-800 leading-relaxed">
+        <p>
+          Pirmās izmaiņas bieži redzamas <strong>2–4 nedēļās</strong>, stabilāk — <strong>2–3 mēnešos</strong>, atkarībā no konkurences un avotu kvalitātes.
+        </p>
+        <div className="rounded-2xl border border-slate-200/60 bg-white/30 p-4">
+          <p className="font-semibold text-slate-900">Ko mēs darām, lai tas nav “viedoklis”:</p>
+          <p className="mt-1 text-slate-800">vienmēr veicam atkārtotus testus, lai redziet, kas mainījies.</p>
+        </div>
+      </div>
+    ),
+  },
+];
 
   // ==========================================
   // UI
