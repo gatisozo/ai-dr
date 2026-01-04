@@ -2302,7 +2302,7 @@ const faqs: Array<{ q: string; a: React.ReactNode }> = [
                     {[
                       { t: '1. nedēļa', d: 'Entity + profilu konsekvence (3 vietas)' },
                       { t: '2. nedēļa', d: 'Procedūru/indikāciju bloks + sertifikāti' },
-                      { t: '3–4. nedēļa', d: 'FAQ + pārtests (5 jautājumi)' },
+                      { t: '3–4. nedēļa', d: 'FAQ + atkārtots tests (5 jautājumi)' },
                     ].map((it, i) => (
                       <div key={i} className="rounded-2xl border border-white/20 bg-white/12 p-3">
                         <div className="font-semibold text-slate-900">{it.t}</div>
