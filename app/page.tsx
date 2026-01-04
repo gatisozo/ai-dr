@@ -31,6 +31,12 @@ const preGeneratedQueries: string[] = [
   'Kurš flebologs specializējas lāzeroperācijās Rīgā?',
   'Kurš ārsts vislabāk izskaidro ārstēšanas iespējas un plānu vēnu problēmām?',
 ];
+const linkLike =
+  'inline-flex items-center gap-2 text-sm font-semibold ' +
+  'text-blue-700 underline underline-offset-4 ' +
+  'hover:text-blue-800 hover:decoration-2 ' +
+  'focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/60 ' +
+  'focus-visible:ring-offset-2 focus-visible:ring-offset-white/20';
 
 function getRandomQuery(): string {
   return preGeneratedQueries[Math.floor(Math.random() * preGeneratedQueries.length)];
@@ -1090,24 +1096,19 @@ const faqs: Array<{ q: string; a: React.ReactNode }> = [
               </button>
             </div>
 
-            <div className="mt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-slate-700">
-              <button
-                type="button"
-                onClick={() => setSampleOpen(true)}
-                className="font-semibold text-slate-900 underline underline-offset-4 hover:opacity-80 inline-flex items-center gap-2"
-              >
-                <FileText className="w-4 h-4" />
-                Skatīt parauga atskaiti
-              </button>
+           <div className="mt-4 flex flex-wrap items-center gap-x-8 gap-y-3">
+  <button type="button" onClick={() => setSampleOpen(true)} className={linkLike}>
+    <FileText className="w-4 h-4" />
+    Apskatīt paraugu
+    <ArrowRight className="w-4 h-4 opacity-70" />
+  </button>
 
-              <button
-                type="button"
-                onClick={() => setDemoOpen(true)}
-                className="font-semibold text-slate-900 underline underline-offset-4 hover:opacity-80"
-              >
-                Noskatīties 20 sek. demo
-              </button>
-            </div>
+  <button type="button" onClick={() => setDemoOpen(true)} className={linkLike}>
+    30 sek. demo
+    <ArrowRight className="w-4 h-4 opacity-70" />
+  </button>
+</div>
+
 
             <p className="text-sm text-slate-700 mt-4">
               Šī ir pārbaude un atskaite, nevis reklāma vai “pārdošanas zvans”. Mēs parādām realitāti - lēmumu pieņemat jūs.
