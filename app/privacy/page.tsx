@@ -44,9 +44,7 @@ export default function PrivacyPage() {
           <div className="text-sm text-slate-700">
             <div className="font-semibold text-slate-900">Datu pārzinis</div>
             <div className="mt-2 space-y-1">
-              <div>{CONTROLLER.legalName}</div>
-              <div>Reģ. Nr.: {CONTROLLER.regNo}</div>
-              <div>Adrese: {CONTROLLER.address}</div>
+
               <div>E-pasts: {CONTROLLER.email}</div>
               <div>Tālrunis: {CONTROLLER.phone}</div>
             </div>
