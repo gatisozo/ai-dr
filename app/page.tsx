@@ -14,7 +14,7 @@ const SPECIALTY_LABEL = 'Fleboloģija';
 const PRODUCT_LABEL = 'Ārsti';
 const EXAMPLE_LABEL = 'Piemērs: fleboloģija';
 const TRUST_CHECK_TITLE = 'Bezmaksas Personal AI Trust Check ārstam';
-const TRUST_CHECK_TAT = '1 darba dienā';
+const TRUST_CHECK_TAT = '1 darba dienas laikā';
 const TRUST_CHECK_BADGE = 'BEZ MAKSAS';
 
 const TRUST_CHECK_BENEFITS = [
@@ -688,7 +688,7 @@ export default function Home() {
               Ja AI nevar droši sasaistīt jūsu vārdu ar vēnu ārstēšanu un metodēm, tas izvēlas drošāku variantu — ieteikt citus.
             </div>
             <div className="text-sm font-semibold text-slate-900 mt-3">Nākamais solis:</div>
-            <div className="text-sm text-slate-800">Personal AI Trust Check (15 jautājumi + “fallback mode” iemesli) – 1 darba dienā.</div>
+            <div className="text-sm text-slate-800">Personal AI Trust Check (5 jautājumi + “fallback mode” iemesli) – 1 darba dienas laikā.</div>
           </div>
         </div>
       ),
@@ -742,7 +742,7 @@ const faqs: Array<{ q: string; a: React.ReactNode }> = [
             <span className="font-semibold">Reālais AI tests (10 sek.)</span> — ko šobrīd iesaka ChatGPT un Claude jautājumā, kuru uzdod pacients.
           </li>
           <li>
-            <span className="font-semibold">Personal AI Trust Check (bez maksas, 1 darba dienā)</span> — 5 jautājumi, “fallback mode” jeb “mākslīgais
+            <span className="font-semibold">Personal AI Trust Check (bez maksas, 1 darba dienas laikā)</span> — 5 jautājumi, “fallback mode” jeb “mākslīgais
             intelekts stāsta muļķības” iemesli, top-5 signāli, kas jālabo, un 30 dienu plāns rīcībai.
           </li>
           <li>
@@ -972,7 +972,7 @@ const faqs: Array<{ q: string; a: React.ReactNode }> = [
   { href: '#trust-check', label: 'Personal Trust Check' },
   { href: '#mini-check', label: 'Mini-check (5–10 sek.)' },
   { href: '#ai-checker', label: 'AI tests (10 sek.)' },
-  { href: '#pricing', label: 'Cena (Month 1 Sprint)' },
+  { href: '#pricing', label: 'Cena (Pirmā mēneša sprints)' },
   { href: '#faq', label: 'FAQ' },
 ].map((it) => (
   <a
@@ -1047,19 +1047,19 @@ const faqs: Array<{ q: string; a: React.ReactNode }> = [
             <h2 className="text-2xl font-bold mb-2">Bezmaksas Personal AI Trust Check 1 darba dienas laikā</h2>
 
             <p className="text-slate-700 mb-2">
-              Pārbaudām: vai AI spēj droši nosaukt jūs tipiskos pacienta jautājumos (un kas traucē, ja nespēj).
+              Pārbaudām: vai AI spēj jūs droši nosaukt tipiskos pacienta jautājumos (un kas traucē, ja nespēj).
             </p>
 
             <p className="text-sm text-slate-600 mb-6">
-              Sāciet ar 10 sek. reālo AI testu zemāk — ja redzi, ka AI tevi nemin, tad uztaisīsim pilno Trust Check ar iemesliem un rīcības plānu.
+              Sāciet ar 10 sek. reālo AI testu zemāk - ja redziet, ka AI jūs nemin, tad uztaisīsim pilno Trust Check ar iemesliem un rīcības plānu.
             </p>
 
             <div className="space-y-3 mb-8 text-left max-w-xl mx-auto">
               {[
                 'Pārbaude 5 tipiskos pacienta jautājumos',
-                '“Fallback mode”, jeb AI "stāsta muļķības" — kāpēc tā un iemesli: kāpēc AI izvēlas citus ārstus vai izdomā muļķības',
-                '“Pirmā mēneša plāns kā rīkoties Jums',
-                '“Kāpēc tas ir jādara tagad nevis jāatliek uz "Kaut kad"',
+                '“Fallback mode”, jeb AI "stāsta muļķības" - kāpēc tā un iemesli: kāpēc AI izvēlas citus ārstus vai izdomā muļķības',
+                '“Pirmā mēneša plāns kā jums rīkoties',
+                '“Kāpēc tas ir jādara tagad nevis jāatliek uz "kaut kad"',
               ].map((t, i) => (
                 <div key={i} className="flex items-center gap-3">
                   <CheckCircle2 className="w-6 h-6 text-emerald-600 flex-shrink-0" />
@@ -1139,7 +1139,7 @@ const faqs: Array<{ q: string; a: React.ReactNode }> = [
             <div className="grid md:grid-cols-2 gap-8">
               <div className="space-y-5">
                 <div className="rounded-2xl border border-white/20 bg-white/12 backdrop-blur-xl p-5">
-                  <div className="text-sm font-semibold text-slate-900 mb-3">Kā notiek (3 soļi):</div>
+                  <div className="text-sm font-semibold text-slate-900 mb-3">Kā tas notiek (3 soļi):</div>
                   <ol className="space-y-2 text-sm text-slate-800 list-decimal pl-5">
                     <li>Iedodat profila lapu + vārdu.</li>
                     <li>Pārbaudām 5 tipiskus pacienta jautājumus + AI “fallback mode” iemeslus.</li>
@@ -1169,26 +1169,37 @@ const faqs: Array<{ q: string; a: React.ReactNode }> = [
                     {SPECIALTY_LABEL}
                   </div>
 
-                  <div className="mt-4 flex flex-col sm:flex-row gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setSampleOpen(true)}
-                      className="rounded-2xl px-4 py-3 font-semibold text-slate-900 border border-white/20 bg-white/20 backdrop-blur-xl hover:bg-white/30 transition"
-                    >
-                      <span className="inline-flex items-center gap-2">
-                        <FileText className="w-4 h-4" />
-                        Apskatīt paraugu
-                      </span>
-                    </button>
+<div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2">
+  <button
+    type="button"
+    onClick={() => setSampleOpen(true)}
+    className={cx(
+      'inline-flex items-center gap-2 text-sm font-semibold',
+      'text-blue-700 underline underline-offset-4',
+      'hover:text-blue-800 hover:decoration-2',
+      'focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white/20'
+    )}
+  >
+    <FileText className="w-4 h-4" />
+    Apskatīt paraugu
+    <ArrowRight className="w-4 h-4 opacity-70" />
+  </button>
 
-                    <button
-                      type="button"
-                      onClick={() => setDemoOpen(true)}
-                      className="rounded-2xl px-4 py-3 font-semibold text-slate-900 border border-white/20 bg-white/20 backdrop-blur-xl hover:bg-white/30 transition"
-                    >
-                      30 sek. demo
-                    </button>
-                  </div>
+  <button
+    type="button"
+    onClick={() => setDemoOpen(true)}
+    className={cx(
+      'inline-flex items-center gap-2 text-sm font-semibold',
+      'text-blue-700 underline underline-offset-4',
+      'hover:text-blue-800 hover:decoration-2',
+      'focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white/20'
+    )}
+  >
+    30 sek. demo
+    <ArrowRight className="w-4 h-4 opacity-70" />
+  </button>
+</div>
+
                 </div>
               </div>
 
@@ -1518,7 +1529,7 @@ const faqs: Array<{ q: string; a: React.ReactNode }> = [
                         <span className="flex-1">
                           <span className="flex items-center justify-between gap-3">
                             <span className="leading-snug">
-                              Saņemt Personal AI Trust Check (1 darba dienā)
+                              Saņemt Personal AI Trust Check (1 darba dienas laikā)
                               <span className="inline-block group-hover:translate-x-0.5 transition-transform"> →</span>
                             </span>
                             <span className="shrink-0 rounded-full bg-white/22 px-3 py-1 text-xs font-extrabold ring-1 ring-white/30">24h</span>
@@ -1596,11 +1607,11 @@ const faqs: Array<{ q: string; a: React.ReactNode }> = [
           </div>
 
           <h2 className="mt-3 text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight">
-            Month 1 Sprint <span className="text-slate-700 font-extrabold">no €690</span>
+            Pirmā mēneša sprints <span className="text-slate-700 font-extrabold">no €690</span>
           </h2>
 
           <p className="mt-3 text-slate-700 leading-relaxed">
-            Cenu runājam <span className="font-semibold">pēc “proof”</span> (AI tests / mini-check), jo līdz tam tas ir tikai “tukšs cipars”.
+            Precīzas iamaksasir zināmas <span className="font-semibold">pēc situācijas pārbaudes</span> (AI tests / mini-check), jo līdz tam nosauktā cena ir tikai “tukšs cipars”.
             Ja AI nemin — tad ir jēga runāt par ieviešanu.
           </p>
 
@@ -1626,7 +1637,7 @@ const faqs: Array<{ q: string; a: React.ReactNode }> = [
           <div className="mt-6 rounded-2xl border border-amber-200/60 bg-amber-50/40 p-4">
             <div className="font-semibold text-amber-900">Kāpēc “ja nesāksi tagad” kļūs grūtāk?</div>
             <div className="mt-1 text-sm text-amber-900/90">
-              Konkurenti uzkrāj publiski citējamus signālus (konsekventi profili + FAQ + avoti). Atstarpe pieaug nevis kompetences, bet AI redzamības dēļ.
+              Konkurenti uzkrāj publiski citējamus signālus (konsekventi ārstu profili + FAQ + citējami avoti). Atstarpe starp jums pieaug nevis kompetences, bet AI redzamības dēļ.
             </div>
           </div>
         </div>
@@ -1706,7 +1717,7 @@ const faqs: Array<{ q: string; a: React.ReactNode }> = [
                 <div className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-xl p-4 ring-1 ring-white/10">
                   <div className="mb-3">
                     <div className="text-xs font-semibold tracking-wide text-slate-700">Tipisks pacienta jautājums AI:</div>
-                    <div className="text-sm text-slate-600 mt-0.5">Spiediet 🎲 — ieliksim vienu no tipiskajiem jautājumiem.</div>
+                    
                   </div>
 
                   <div className="flex items-center justify-between mb-3 text-sm text-slate-700">
@@ -1758,7 +1769,7 @@ const faqs: Array<{ q: string; a: React.ReactNode }> = [
                     className={inputBase}
                   />
                   <div className="mt-2 text-xs text-slate-600">
-                    * AI ne vienmēr min ārstu vārdus. Ja vārds nav minēts, tas bieži nozīmē, ka publiskie signāli par praksi nav pietiekami citējami un uzticami no AI viedokļa.
+                    * AI ne vienmēr min ārstu vārdus. Ja vārds nav minēts, tas bieži nozīmē, ka publiskie signāli par ārsta praksi nav pietiekami citējami un uzticami no AI viedokļa.
                   </div>
                 </div>
               </div>
@@ -1801,7 +1812,7 @@ const faqs: Array<{ q: string; a: React.ReactNode }> = [
                     onClick={() => document.getElementById('trust-check')?.scrollIntoView({ behavior: 'smooth' })}
                     className="mt-3 w-full bg-slate-900"
                   >
-                    Vēlies Personal AI Trust Check (1 darba dienā)?
+                    Vēlies Personal AI Trust Check (1 darba dienas laikā)?
                   </GlassButton>
                 </div>
               )}
