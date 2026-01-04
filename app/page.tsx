@@ -2144,9 +2144,7 @@ const faqs: Array<{ q: string; a: React.ReactNode }> = [
               <a className="hover:text-slate-700 underline-offset-4 hover:underline" href="/privacy">
                 Privātuma politika
               </a>
-              <a className="hover:text-slate-700 underline-offset-4 hover:underline" href="/terms">
-                Noteikumi
-              </a>
+
             </div>
           </div>
         </div>

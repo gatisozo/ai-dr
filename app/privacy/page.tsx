@@ -17,9 +17,9 @@ function Bullet({ children }: { children: React.ReactNode }) {
 export default function PrivacyPage() {
   // Rekvizīti vēl nav — ieliekam placeholder
   const CONTROLLER = {
-    legalName: 'xx',
-    regNo: 'xx',
-    address: 'xx',
+    //legalName: 'xx',
+    //regNo: 'xx',
+    //address: 'xx',
     email: 'go@lucera.site',
     phone: '+371 29 229 686',
   };
@@ -27,9 +27,9 @@ export default function PrivacyPage() {
   // Pielāgo pēc realitātes (īpaši e-pasts / DB / AI)
   const PROCESSORS = [
     'Vercel (hostings / servera infrastruktūra)',
-    'E-pasta pakalpojumu sniedzējs (iekšēji paziņojumi + audita nosūtīšana) — xx',
-    'Datubāze / CRM (ja glabā leadus vai notikumus) — xx',
-    'AI modeļu nodrošinātāji (AI testam / interpretācijai), ja izmanto — xx',
+    //'E-pasta pakalpojumu sniedzējs (iekšēji paziņojumi + audita nosūtīšana) — xx',
+    //'Datubāze / CRM (ja glabā leadus vai notikumus) — xx',
+    'AI modeļu nodrošinātāji (AI testam / interpretācijai), ja izmanto — ChatGPT un Claude',
   ];
 
   return (
@@ -68,7 +68,7 @@ export default function PrivacyPage() {
         <SectionTitle>Kādus datus mēs apstrādājam</SectionTitle>
         <ul className="space-y-2">
           <Bullet>
-            <span className="font-semibold">Kontaktdati:</span> e-pasts, (ja norādīts) klīnikas nosaukums.
+            <span className="font-semibold">Kontaktdati:</span> e-pasts, (ja norādīts), ārsta vārds un uzvārds, klīnikas nosaukums.
           </Bullet>
           <Bullet>
             <span className="font-semibold">Auditam:</span> mājaslapas adrese/domēns, izvēlētā specializācija, avots (piem., “free-audit-form”).
@@ -164,9 +164,7 @@ export default function PrivacyPage() {
               Tehniskie žurnāli drošībai/diagnostikai — saprātīgu laiku (piem., līdz <span className="font-semibold">90 dienām</span>).
             </Bullet>
           </ul>
-          <p className="mt-3 text-sm text-slate-600">
-            Pielāgo termiņus tam, kā reāli glabā datus tavā DB/CRM un e-pasta sistēmā.
-          </p>
+
         </div>
 
         <SectionTitle>Jūsu tiesības</SectionTitle>
