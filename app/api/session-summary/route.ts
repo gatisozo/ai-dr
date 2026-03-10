@@ -7,7 +7,7 @@ import { Resend } from "resend";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const resend = new Resend(process.env.RESEND_API_KEY!);
+// Resend is instantiated per-request (see handlers below) to avoid build-time errors
 
 function line(label: string, value?: string | null) {
   const v = (value ?? "").toString().trim();
@@ -109,6 +109,7 @@ export async function POST(req: Request) {
     }
 
     // SEND EMAIL
+    const resend = new Resend(process.env.RESEND_API_KEY!);
     await resend.emails.send({
       from: "Lucera Audit <reports@lucera.site>",
       to: ["go@lucera.site"],

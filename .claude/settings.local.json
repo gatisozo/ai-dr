@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -r \"process\\\\.env\\\\.\" \"X:\\\\AI-readyness\\\\Projects\\\\ai-dr\" --include=\"*.ts\" --include=\"*.tsx\" --include=\"*.js\" --include=\"*.mjs\" 2>/dev/null | cut -d: -f2- | sort -u | head -20)",
+      "Bash(grep -r \"NEXT_PUBLIC\" \"X:\\\\AI-readyness\\\\Projects\\\\ai-dr\" --include=\"*.ts\" --include=\"*.tsx\" --include=\"*.js\" --include=\"*.mjs\" 2>/dev/null | cut -d: -f2- | sort -u)",
+      "Bash(find \"X:\\\\AI-readyness\\\\Projects\\\\ai-dr\" -maxdepth 2 -name \"*.config.*\" -o -name \".env*\" -o -name \"vercel.json\" 2>/dev/null | grep -v node_modules | grep -v .next)",
+      "Bash(cd \"X:\\\\AI-readyness\\\\Projects\\\\ai-dr\" && npm run build 2>&1)"
+    ]
+  }
+}

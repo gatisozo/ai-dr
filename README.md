@@ -1,36 +1,114 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lucera — AI-DR
 
-## Getting Started
+AI visibility audit tool for medical professionals in Latvia.
 
-First, run the development server:
+Doctors can check how well their website is understood and recommended by AI assistants
+(ChatGPT and Claude) relative to other clinics in their specialty.
+
+**Production:** https://ai-dr.lucera.site
+
+---
+
+## Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js (App Router), React 19 |
+| Language | TypeScript (strict) |
+| Styling | Tailwind CSS v4 |
+| Animation | Framer Motion |
+| Icons | Lucide React |
+| AI — OpenAI | `gpt-3.5-turbo` (ai-check), `gpt-4.1-mini` (mini-check LLM interpretation) |
+| AI — Anthropic | `claude-sonnet-4-20250514` (ai-check) |
+| Email | Resend |
+| HTML parsing | Cheerio |
+| Deployment | Vercel |
+
+---
+
+## Local development
+
+```bash
+npm install
+```
+
+Create `.env.local` at the repo root (see `.env.example` for required variable names).
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+App runs at http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Environment variables
 
-## Learn More
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `OPENAI_API_KEY` | Yes | OpenAI API key (mini-check LLM + ai-check) |
+| `ANTHROPIC_API_KEY` | Yes | Anthropic API key (ai-check) |
+| `RESEND_API_KEY` | Yes | Resend email service (lead/form/session routes) |
+| `NEXT_PUBLIC_GA_ID` | No | Google Analytics ID; GA is skipped if absent |
+| `MAX_REQUESTS_PER_HOUR` | No | Present in .env.local; rate limits are currently hardcoded |
 
-To learn more about Next.js, take a look at the following resources:
+Copy `.env.example` to `.env.local` and fill in values. Never commit `.env.local`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Scripts
 
-## Deploy on Vercel
+```bash
+npm run dev      # development server with hot reload
+npm run build    # production build
+npm start        # serve production build locally
+npm run lint     # ESLint check
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+No test suite is configured.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Folder overview
+
+```
+app/
+  api/
+    mini-check/     # POST: website SEO + AI recommendability audit
+    ai-check/       # POST: live ChatGPT vs Claude comparison
+    lead/           # POST: lead capture → email via Resend
+    form/           # POST: secondary form handler
+    session-summary/# POST: session analytics
+  components/       # Shared UI components
+  privacy/          # Privacy policy page
+  terms/            # Terms page
+  layout.tsx        # Root layout (GA, cookies, metadata)
+  page.tsx          # Main landing page
+lib/
+  aiService.ts      # OpenAI + Anthropic API wrappers
+  aiQueries.ts      # Medical specialty query templates
+  session.ts        # Session/consent tracking
+public/
+  brand/            # Lucera brand assets
+```
+
+---
+
+## Deployment
+
+Pushes to `main` trigger automatic Vercel deployment to production.
+No `vercel.json` is present — all configuration is in the Vercel dashboard.
+
+Set all required environment variables in Vercel → Project Settings → Environment Variables
+for Production, Preview, and Development environments separately.
+
+See `docs/deploy.md` for full deployment checklist.
+
+---
+
+## Contributing
+
+- Run `npm run lint` and `npm run build` before opening a PR
+- All user-facing text is in Latvian — keep it consistent
+- Do not change AI model IDs, scoring weights, or rate limits without explicit sign-off
+- See `docs/product-rules.md` for what requires approval before changing
